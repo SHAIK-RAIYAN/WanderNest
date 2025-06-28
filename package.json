@@ -1,0 +1,25 @@
+{
+  "name": "tripnest",
+  "version": "1.0.0",
+  "description": "TripNest - Where Every Trip Finds a Nest.",
+  "homepage": "https://github.com/SHAIK-RAIYAN/TripNest#readme",
+  "bugs": {
+    "url": "https://github.com/SHAIK-RAIYAN/TripNest/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SHAIK-RAIYAN/TripNest.git"
+  },
+  "license": "ISC",
+  "author": "SHAIK RAIYAN",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.1"
+  }
+}
