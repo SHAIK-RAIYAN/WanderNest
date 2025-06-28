@@ -1,0 +1,30 @@
+<!-- This shows each clicked hotel listing  -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= hotel.title %> | WanderNest</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <img
+          src="<%= hotel.image.url %>"
+          alt="<%= hotel.title %>"
+          class="hotel-image" />
+        <div class="content">
+          <h1><%= hotel.title %></h1>
+          <p class="location"><%= hotel.location %>, <%= hotel.country %></p>
+          <p class="description"><%= hotel.description %></p>
+          <p class="price">Price: ₹<%= hotel.price %>/night</p>
+        </div>
+        <a href="/listings/<%= hotel._id %>/edit" class="btn">Edit Listing</a>
+        <form action="/listings/<%= hotel._id %>?_method=DELETE" method="POST">
+          <button class="btn delete-btn" type="submit">Delete Listing</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
