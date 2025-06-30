@@ -1,0 +1,275 @@
+/* Global Styles */
+body {
+  /* background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.3)
+    ),
+    url("../images/nikunj-singh-M6_nqrpgQ24-unsplash.jpg"); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: #f0f0f0;
+  font-size: 1.2em;
+}
+
+a:hover {
+  color: #66fcf1;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* Index Page Styles */
+.listing-list h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #66fcf1;
+}
+
+.listing-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.listing-list li {
+  background-color: #2b2b3c;
+  margin: 15px 0;
+  padding: 15px 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.listing-list li:hover {
+  background-color: #393955;
+}
+.add-btn {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.btn {
+  background-color: #66fcf1;
+  color: #121212;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn:hover {
+  background-color: #4fd8e6;
+}
+
+/*  */
+/*  */
+
+/* Show Page Styles */
+.card {
+  background-color: #1e1e2f;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hotel-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid #333;
+}
+
+.content {
+  padding: 20px;
+}
+
+.content h1 {
+  margin-top: 0;
+  color: #66fcf1;
+}
+
+.description {
+  font-size: 1.05em;
+  margin-bottom: 20px;
+}
+
+.price {
+  font-size: 1.2em;
+  color: #03dac6;
+  font-weight: bold;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+/*  */
+/*  */
+
+/* new.ejs */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+input,
+textarea {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2a2a3b;
+  color: #f0f0f0;
+}
+
+button {
+  background-color: #66fcf1;
+  color: #121212;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #4fd8e6;
+}
+
+/*  */
+/*  */
+
+/* NAVBAR.ejs */
+/* Primary Navbar glass effect */
+/* Fixed navbar with glass blur */
+.custom-navbar {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Secondary navbar (beneath primary) */
+.custom-nav-collapse {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.5rem 0;
+}
+
+/* Responsive behavior */
+@media (min-width: 768px) {
+  .custom-nav-collapse {
+    display: block !important;
+  }
+}
+@media (max-width: 767.98px) {
+  .custom-nav-collapse {
+    display: none; /* collapse handles toggling */
+  }
+}
+
+/* Brand text styles */
+.logo h1 {
+  font-size: 2rem;
+  font-weight: 800;
+}
+.logo .tagline {
+  font-size: 0.85rem;
+  font-weight: 200;
+  color: #bbb;
+}
+
+/* Book Now button */
+.book-now {
+  background: white !important;
+  color: black !important;
+  font-weight: 600 !important;
+  border-radius: 5px;
+}
+.book-now:hover {
+  background: #acacac;
+}
+
+/* Location dropdown */
+.location-dropdown {
+  background: rgba(40, 40, 40, 0.5);
+  backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+.location-dropdown .form-select {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+  padding: 0 24px 0 8px;
+  appearance: none;
+  width: auto;
+  min-width: 100px;
+}
+.location-dropdown .dropdown-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Secondary nav links */
+.custom-nav-links .nav-link {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.custom-nav-links .nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Prevent content from being hidden behind fixed navbar */
+body {
+  padding-top: 6rem;
+}
+
+/* Ensure proper spacing on mobile collapse */
+@media (max-width: 767.98px) {
+  .custom-nav-links.flex-row {
+    flex-direction: column !important;
+    align-items: center;
+  }
+
+  .custom-nav-links .nav-item {
+    margin: 0.25rem 0 !important;
+  }
+}

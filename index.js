@@ -11,6 +11,10 @@ app.use(express.urlencoded({ extended: true }));
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
 
+const ejsMate = require("ejs-mate");
+app.engine("ejs", ejsMate);
+
+
 // MODELS
 const Listing = require("./models/listing.js");
 
