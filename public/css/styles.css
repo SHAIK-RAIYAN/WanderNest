@@ -14,6 +14,12 @@ body {
 body#internalPage {
   padding-top: 50px; /* Adjust to your actual navbar height */
 }
+@media (max-width: 767.98px) {
+  body#homePage {
+    padding-top: 60px; /* Or match your navbar height */
+  }
+}
+
 
 h1,
 .navbar-brand {
@@ -121,12 +127,15 @@ a:hover {
 }
 
 #navbarTogglerDemo02 .nav-link {
-  transition: transform 0.2s ease, font-size 0.2s ease;
+  transition: transform 0.1s ease, font-size 0.1s ease;
 }
 
-#navbarTogglerDemo02 .nav-link:hover {
-  transform: scale(1.2);
+@media (min-width: 768px) {
+  #navbarTogglerDemo02 .nav-link:hover {
+    transform: scale(1.2);
+  }
 }
+
 
 .navbar-toggler {
   box-shadow: none !important;

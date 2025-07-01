@@ -1,5 +1,5 @@
 <% layout('layouts/boilerplate') %>
-<body id="internalPage">
+<body id="internalPage"  data-page="new">
   <div class="container my-5">
     <div class="row justify-content-center">
       <div class="col-12 col-md-11 col-lg-9 col-xl-8">
@@ -40,14 +40,11 @@
                   class="form-control"
                   required />
               </div>
-              <div class="col-md-6 mb-3">
+              <div class="mb-3">
                 <label for="country" class="form-label">Country:</label>
-                <input
-                  type="text"
-                  id="country"
-                  name="listing[country]"
-                  class="form-control"
-                  required />
+                <select id="country" name="listing[country]" class="form-select" required>
+                  <!-- options will be injected here -->
+                </select>
               </div>
             </div>
 

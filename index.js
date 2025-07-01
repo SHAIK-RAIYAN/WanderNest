@@ -14,7 +14,6 @@ app.use(methodOverride("_method"));
 const ejsMate = require("ejs-mate");
 app.engine("ejs", ejsMate);
 
-
 // MODELS
 const Listing = require("./models/listing.js");
 
@@ -91,10 +90,21 @@ app.get("/listings/:id/edit", async (req, res) => {
 
 app.put("/listings/:id", async (req, res) => {
   const { id } = req.params;
+  const updatedData = req.body.listing;
+
+  // If image is empty string, set it to default image
+  if (!updatedData.image) {
+    updatedData.image = {
+      url: "https://img.freepik.com/premium-vector/no-photos-icon-vector-image-can-be-used-spa_120816-264914.jpg?w=1380",
+    };
+  } else {
+    // If image is string (not object), convert to correct format
+    updatedData.image = { url: updatedData.image };
+  }
+
   await Listing.findByIdAndUpdate(id, req.body.listing);
   res.redirect(`/listings/${id}`);
 });
-
 
 app.delete("/listings/:id", async (req, res) => {
   const { id } = req.params;

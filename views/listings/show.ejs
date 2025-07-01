@@ -1,23 +1,34 @@
-<!-- This shows each clicked hotel listing  -->
 <% layout('layouts/boilerplate') %>
+<body id="internalPage">
+  <div class="container my-5">
+    <!-- Page Heading -->
+    <h1 class="mb-4 fw-bold">Hotel Details</h1>
 
-  <body id="internalPage">
-    <div class="container">
-      <div class="card">
-        <img
-          src="<%= hotel.image.url %>"
-          alt="<%= hotel.title %>"
-          class="hotel-image" />
-        <div class="content">
-          <h1><%= hotel.title %></h1>
-          <p class="location"><%= hotel.location %>, <%= hotel.country %></p>
-          <p class="description"><%= hotel.description %></p>
-          <p class="price">Price: ₹<%= hotel.price %>/night</p>
-        </div>
-        <a href="/listings/<%= hotel._id %>/edit" class="btn">Edit Listing</a>
-        <form action="/listings/<%= hotel._id %>?_method=DELETE" method="POST">
-          <button class="btn delete-btn" type="submit">Delete Listing</button>
-        </form>
-      </div>
+    <!-- Hero Image -->
+    <img
+      src="<%= hotel.image.url %>"
+      alt="<%= hotel.title %>"
+      class="img-fluid rounded-4 mb-4 w-100"
+      style="max-height: 500px; object-fit: cover;" />
+
+    <!-- Hotel Information -->
+    <div class="mb-4">
+      <h2 class="fw-bold"><%= hotel.title %></h2>
+      <p class="text-muted mb-1 fs-5"><i class="fas fa-map-marker-alt me-2"></i><%= hotel.location %>, <%= hotel.country %></p>
+      <p class="fs-5"><%= hotel.description %></p>
+      <p class="fw-semibold fs-5">Price: ₹<%= hotel.price.toLocaleString("en-IN") %> / night</p>
     </div>
-  </body>
+
+    <!-- Action Buttons -->
+    <div class="d-flex flex-wrap gap-3 mt-4">
+      <a href="/listings/<%= hotel._id %>/edit" class="btn btn-dark btn-lg">
+        <i class="fas fa-edit me-1"></i> Edit 
+      </a>
+      <form action="/listings/<%= hotel._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Delete this listing?');">
+        <button type="submit" class="btn btn-danger btn-lg">
+          <i class="fas fa-trash-alt me-1"></i> Delete 
+        </button>
+      </form>
+    </div>
+  </div>
+</body>

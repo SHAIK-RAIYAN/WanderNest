@@ -10,7 +10,6 @@ collapseTarget.addEventListener("hidden.bs.collapse", () => {
   toggler.classList.remove("cross");
 });
 
-
 // Transparent navbar
 document.addEventListener("DOMContentLoaded", function () {
   const navbar = document.getElementById("mainNavbar");
@@ -47,3 +46,25 @@ document.addEventListener("DOMContentLoaded", function () {
     navbar.classList.remove("navbar-dark");
   }
 });
+
+//adding countries options in new/edit.ejs
+(function () {
+  const select = document.getElementById("country");
+  const pageType = document.body.dataset.page;
+  const selectedCountry = select.getAttribute("data-selected-country");
+  countries.forEach((country) => {
+    const opt = document.createElement("option");
+    opt.value = country;
+    opt.textContent = country;
+    // Only select India by default on new.ejs
+    if (pageType === "new" && country === "India") {
+      opt.selected = true;
+    }
+    // On edit listing: select the current listing.country
+    if (pageType === "edit" && country === selectedCountry) {
+      opt.selected = true;
+    }
+    select.appendChild(opt);
+  });
+})();
+
