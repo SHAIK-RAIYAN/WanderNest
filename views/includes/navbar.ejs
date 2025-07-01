@@ -1,88 +1,39 @@
-<header class="fixed-top">
-  <!-- Primary Navbar -->
-  <nav class="navbar custom-navbar navbar-expand-md">
-    <div class="container-fluid">
-      <div class="row w-100 align-items-center flex-nowrap">
-        <!-- Location Selector -->
-        <div class="col-auto">
-          <div class="location-dropdown d-flex align-items-center">
-            <i class="fas fa-map-marker-alt me-2 text-white"></i>
-            <select class="form-select" id="city" name="city">
-              <option selected>Delhi</option>
-              <option>Mumbai</option>
-              <option>Bangalore</option>
-              <option>Hyderabad</option>
-              <option>Chennai</option>
-              <option>Kolkata</option>
-              <option>Pune</option>
-              <option>Jaipur</option>
-              <option>Ahmedabad</option>
-              <option>Lucknow</option>
-            </select>
-            <i class="fas fa-chevron-down dropdown-arrow text-white"></i>
-          </div>
-        </div>
-
-        <!-- Brand -->
-        <div class="col text-center">
-          <div class="logo">
-            <h1 class="text-white mb-0">WanderNest</h1>
-            <p class="text-light mb-0 tagline">
-              – Where Every Wander Finds a Nest –
-            </p>
-          </div>
-        </div>
-
-        <!-- Auth Buttons + Book Now -->
-        <div class="col-auto d-flex align-items-center">
-          <div class="d-none d-md-flex align-items-center">
-            <a href="/signup" class="btn btn-outline-light me-2">
-              <i class="fas fa-user-plus"></i> Sign Up
-            </a>
-            <a href="/login" class="btn btn-outline-light me-2">
-              <i class="fas fa-sign-in-alt"></i> Login
-            </a>
-            <button class="btn book-now">BOOK NOW</button>
-          </div>
-
-          <!-- Burger icon for secondary nav -->
-          <button
-            class="navbar-toggler ms-2"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#secondaryNav"
-            aria-controls="secondaryNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Secondary Nav -->
-  <div class="collapse navbar-collapse custom-nav-collapse" id="secondaryNav">
-    <ul
-      class="navbar-nav flex-row justify-content-center w-100 custom-nav-links mb-0">
-      <li class="nav-item mx-2">
-        <a class="nav-link text-white" href="#">EXPERIENCE</a>
+<nav
+id="mainNavbar"
+  class="navbar navbar-expand-md fixed-top border-bottom border-body glass-effect navbar-transparent"
+  data-bs-theme="light">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold fs-3" href="#"
+      ><img
+        src="/images/download.png"
+        alt="Logo"
+        width="40"
+        height="40"
+        class="d-inline-block align-text-top" />
+      WanderNest</a
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarTogglerDemo02"
+      id="burgerToggle">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+  <div
+    class="collapse navbar-collapse width-30vw me-4 border-0"
+    id="navbarTogglerDemo02">
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2 ps-3 ps-md-0">
+      <li class="nav-item mx-1">
+        <a class="nav-link active" aria-current="page" href="/">Home</a>
       </li>
-      <li class="nav-item mx-2">
-        <a class="nav-link text-white" href="#">ROOMS</a>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/listings">Listings</a>
       </li>
-      <li class="nav-item mx-2">
-        <a class="nav-link text-white" href="#">CLUB + SPA</a>
-      </li>
-      <li class="nav-item mx-2">
-        <a class="nav-link text-white" href="#">FOOD + DRINK</a>
-      </li>
-      <li class="nav-item mx-2">
-        <a class="nav-link text-white" href="#">MEETINGS + EVENTS</a>
-      </li>
-      <li class="nav-item mx-2">
-        <a class="nav-link text-white" href="#">OFFERS</a>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/listings/new">Add listing</a>
       </li>
     </ul>
   </div>
-</header>
+</nav>
