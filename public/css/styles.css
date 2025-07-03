@@ -170,6 +170,18 @@ a:hover {
   }
 }
 
+/*footer */
+/* Social icons hover scale effect */
+.btn-floating i {
+  transition: transform 0.3s ease;
+}
+
+.btn-floating:hover i {
+  transform: scale(1.2);
+}
+
+
+
 /* Index Page and Listing Card Styles */
 .listing-list h1 {
   text-align: center;
