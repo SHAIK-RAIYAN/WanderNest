@@ -6,7 +6,7 @@
         <!-- Card-like Form Box -->
         <div class="border border-secondary-subtle rounded p-4">
           <h1 class="mb-4">Create a New Listing</h1>
-          <form action="/listings" method="POST">
+          <form action="/listings" method="POST" class="needs-validation" novalidate>
             <!-- Title -->
             <div class="mb-3">
               <label for="title" class="form-label">Title:</label>
@@ -16,6 +16,9 @@
                 name="listing[title]"
                 class="form-control"
                 required />
+                <div class="invalid-feedback">
+                  Please enter a Title.
+                </div>
             </div>
 
             <!-- Description -->
@@ -27,6 +30,9 @@
                 rows="4"
                 class="form-control"
                 required></textarea>
+                <div class="invalid-feedback">
+                  Please enter a Description.
+                </div>
             </div>
 
             <!-- Price + Country -->
@@ -39,12 +45,18 @@
                   name="listing[price]"
                   class="form-control"
                   required />
+                  <div class="invalid-feedback">
+                    Please enter a Price.
+                  </div>
               </div>
               <div class="mb-3">
                 <label for="country" class="form-label">Country:</label>
                 <select id="country" name="listing[country]" class="form-select" required>
                   <!-- options will be injected here -->
                 </select>
+                <div class="invalid-feedback">
+                  Please select a Country.
+                </div>
               </div>
             </div>
 
@@ -56,6 +68,9 @@
                 id="image"
                 name="listing[image]"
                 class="form-control" />
+                <div class="invalid-feedback">
+                  Please provide a Image URL.
+                </div>
             </div>
 
             <!-- Location -->
@@ -67,6 +82,9 @@
                 name="listing[location]"
                 class="form-control"
                 required />
+                <div class="invalid-feedback">
+                  Please enter a Location.
+                </div>
             </div>
 
             <!-- Submit Button -->

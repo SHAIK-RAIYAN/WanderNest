@@ -7,7 +7,7 @@
         <!-- Card-like Form Box -->
         <div class="border border-secondary-subtle rounded p-4">
           <h1 class="mb-4">Edit Listing</h1>
-          <form action="/listings/<%= listing._id %>?_method=PUT" method="POST">
+          <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
             <!-- Title -->
             <div class="mb-3">
               <label for="title" class="form-label">Title:</label>
@@ -18,6 +18,9 @@
                 class="form-control"
                 value="<%= listing.title %>"
                 required />
+                <div class="invalid-feedback">
+                  Please enter a Title.
+                </div>
             </div>
 
             <!-- Description -->
@@ -31,6 +34,9 @@
                 required>
 <%= listing.description %></textarea
               >
+              <div class="invalid-feedback">
+                Please enter a Description.
+              </div>
             </div>
 
             <!-- Price + Country on same row -->
@@ -44,6 +50,9 @@
                   class="form-control"
                   value="<%= listing.price %>"
                   required />
+                  <div class="invalid-feedback">
+                    Please enter a Price.
+                  </div>
               </div>
               <div class="mb-3">
                 <label for="country" class="form-label">Country:</label>
@@ -55,6 +64,9 @@
                   data-selected-country="<%= listing.country %>">
                   <!-- Options will be populated via JS -->
                 </select>
+                <div class="invalid-feedback">
+                  Please select a Country.
+                </div>
               </div>
             </div>
 
@@ -67,6 +79,9 @@
                 name="listing[image]"
                 class="form-control"
                 value="<%= listing.image.url %>" />
+                <div class="invalid-feedback">
+                  Please provide a Image URL.
+                </div>
             </div>
 
             <!-- Location -->
@@ -79,6 +94,9 @@
                 class="form-control"
                 value="<%= listing.location %>"
                 required />
+                <div class="invalid-feedback">
+                  Please enter a Location.
+                </div>
             </div>
 
             <!-- Submit Button -->

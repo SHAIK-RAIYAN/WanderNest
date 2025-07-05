@@ -68,3 +68,25 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 })();
 
+(() => {
+  "use strict";
+
+  // Select all forms needing Bootstrap validation
+  const forms = document.querySelectorAll(".needs-validation");
+
+  Array.from(forms).forEach((form) => {
+    form.addEventListener(
+      "submit",
+      (event) => {
+        // If form is invalid, prevent submission and show feedback
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  });
+})();
