@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') %>
+
+<body>
+  <div
+    class="container d-flex align-items-center justify-content-center"
+    style="min-height: 70vh">
+    <div class="card border-0 shadow-lg w-100 w-md-75 w-lg-50">
+      <div class="card-body p-0">
+        <div class="alert alert-danger m-0 text-center rounded-0" role="alert">
+          <h1 class="display-1"><i class="fas fa-exclamation-triangle"></i></h1>
+          <h4 class="fw-semibold text-dark">Oops! Something went wrong</h4>
+          <p class="text-muted mb-3">Error <%= status %>: <%= message %></p>
+          <hr class="my-4" />
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="/listings" class="btn btn-dark px-4">
+              <i class="fas fa-home me-1"></i> Home
+            </a>
+            <a href="mailto:support@wandernest.com" class="btn btn-outline-secondary px-4">
+              <i class="fas fa-envelope me-1"></i> Report Issue
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

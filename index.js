@@ -147,6 +147,7 @@ app.all("{*splat}", (req, res, next) => {
 
 app.use((err, req, res, next) => {
   let { status = 500, message = "Something went wrong" } = err;
-  res.status(status).send(message);
+  res.status(status).render("listings/error.ejs", { status, message });
+
 });
 
