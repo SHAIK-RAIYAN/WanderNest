@@ -16,6 +16,9 @@ app.engine("ejs", ejsMate);
 
 // MODELS
 const Listing = require("./models/listing.js");
+// error handling
+const wrapAsync = require("./utils/wrapAsync.js");
+const ExpressError = require("./utils/ExpressError");
 
 // mongoose connectioon
 const mongoose = require("mongoose");
@@ -42,26 +45,32 @@ app.get("/", (req, res) => {
 });
 
 // initialise data
-app.get("/test", async (req, res) => {
-  let samplehotel = new Listing({
-    title: "My sample Villa",
-    description: "By the beach",
-    price: 1200,
-    location: "Calangute, Goa",
-    country: "India",
-  });
+app.get(
+  "/test",
+  wrapAsync(async (req, res) => {
+    let samplehotel = new Listing({
+      title: "My sample Villa",
+      description: "By the beach",
+      price: 1200,
+      location: "Calangute, Goa",
+      country: "India",
+    });
 
-  await samplehotel.save().then((res) => {
-    console.log(res);
-  });
-  res.send("sample data saved");
-});
+    await samplehotel.save().then((res) => {
+      console.log(res);
+    });
+    res.send("sample data saved");
+  })
+);
 
 // index route
-app.get("/listings", async (req, res) => {
-  let alllistings = await Listing.find({});
-  res.render("listings/index.ejs", { alllistings });
-});
+app.get(
+  "/listings",
+  wrapAsync(async (req, res) => {
+    let alllistings = await Listing.find({});
+    res.render("listings/index.ejs", { alllistings });
+  })
+);
 
 // new hotel btn from index.ejs
 app.get("/listings/new", (req, res) => {
@@ -69,45 +78,75 @@ app.get("/listings/new", (req, res) => {
 });
 
 //show list route
-app.get("/listings/:id", async (req, res) => {
-  let { id } = req.params;
-  let hotel = await Listing.findById(id);
-  res.render("listings/show.ejs", { hotel });
-});
+app.get(
+  "/listings/:id",
+  wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    let hotel = await Listing.findById(id);
+    res.render("listings/show.ejs", { hotel });
+  })
+);
 
 // create new listing from new.ejs
-app.post("/listings", async (req, res) => {
-  const newListing = new Listing(req.body.listing);
-  await newListing.save();
-  res.redirect("/listings");
+app.post(
+  "/listings",
+  wrapAsync(async (req, res) => {
+    if (!req.body.listing) {
+      next(new ExpressError(400, "send Valid Data"));
+    }
+    const newListing = new Listing(req.body.listing);
+
+    await newListing.save();
+    res.redirect("/listings");
+  })
+);
+
+app.get(
+  "/listings/:id/edit",
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const listing = await Listing.findById(id);
+    res.render("listings/edit", { listing });
+  })
+);
+
+app.put(
+  "/listings/:id",
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const updatedData = req.body.listing;
+
+    // If image is empty string, set it to default image
+    if (!updatedData.image) {
+      updatedData.image = {
+        url: "https://img.freepik.com/premium-vector/no-photos-icon-vector-image-can-be-used-spa_120816-264914.jpg?w=1380",
+      };
+    } else {
+      // If image is string (not object), convert to correct format
+      updatedData.image = { url: updatedData.image };
+    }
+
+    await Listing.findByIdAndUpdate(id, req.body.listing);
+    res.redirect(`/listings/${id}`);
+  })
+);
+
+app.delete(
+  "/listings/:id",
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    await Listing.findByIdAndDelete(id);
+    res.redirect("/listings");
+  })
+);
+
+//errors
+app.all("{*splat}", (req, res, next) => {
+  next(new ExpressError(404, "Page Not Found"));
 });
 
-app.get("/listings/:id/edit", async (req, res) => {
-  const { id } = req.params;
-  const listing = await Listing.findById(id);
-  res.render("listings/edit", { listing });
+app.use((err, req, res, next) => {
+  let { status = 500, message = "Something went wrong" } = err;
+  res.status(status).send(message);
 });
 
-app.put("/listings/:id", async (req, res) => {
-  const { id } = req.params;
-  const updatedData = req.body.listing;
-
-  // If image is empty string, set it to default image
-  if (!updatedData.image) {
-    updatedData.image = {
-      url: "https://img.freepik.com/premium-vector/no-photos-icon-vector-image-can-be-used-spa_120816-264914.jpg?w=1380",
-    };
-  } else {
-    // If image is string (not object), convert to correct format
-    updatedData.image = { url: updatedData.image };
-  }
-
-  await Listing.findByIdAndUpdate(id, req.body.listing);
-  res.redirect(`/listings/${id}`);
-});
-
-app.delete("/listings/:id", async (req, res) => {
-  const { id } = req.params;
-  await Listing.findByIdAndDelete(id);
-  res.redirect("/listings");
-});
