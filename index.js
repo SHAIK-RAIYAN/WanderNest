@@ -20,6 +20,20 @@ const Listing = require("./models/listing.js");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError");
 
+//Joi error message handling
+const { listingSchema } = require("./utils/schemas");
+// middleware function/validateListing
+//to validate our input data
+function validateListing(req, res, next) {
+  const { error } = listingSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((ele) => ele.message).join(", ");
+    throw new ExpressError(400, msg);
+  }
+  next();
+}
+
+
 // mongoose connectioon
 const mongoose = require("mongoose");
 const MONGO_URL = "mongodb://127.0.0.1:27017/WanderNest";
@@ -89,7 +103,7 @@ app.get(
 
 // create new listing from new.ejs
 app.post(
-  "/listings",
+  "/listings",validateListing,
   wrapAsync(async (req, res) => {
     if (!req.body.listing) {
       next(new ExpressError(400, "send Valid Data"));
@@ -112,6 +126,7 @@ app.get(
 
 app.put(
   "/listings/:id",
+  validateListing,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const updatedData = req.body.listing;

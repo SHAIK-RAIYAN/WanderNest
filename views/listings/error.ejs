@@ -1,27 +1,50 @@
 <% layout('layouts/boilerplate') %>
 
-<body>
-  <div
-    class="container d-flex align-items-center justify-content-center"
-    style="min-height: 70vh">
-    <div class="card border-0 shadow-lg w-100 w-md-75 w-lg-50">
-      <div class="card-body p-0">
-        <div class="alert alert-danger m-0 text-center rounded-0" role="alert">
-          <h1 class="display-1"><i class="fas fa-exclamation-triangle"></i></h1>
-          <h4 class="fw-semibold text-dark">Oops! Something went wrong</h4>
-          <p class="text-muted mb-3">Error <%= status %>: <%= message %></p>
-          <hr class="my-4" />
-          <div class="d-flex justify-content-center gap-3 mt-4">
-            <a href="/listings" class="btn btn-dark px-4">
-              <i class="fas fa-home me-1"></i> Home
-            </a>
-            <a href="mailto:support@wandernest.com" class="btn btn-outline-secondary px-4">
-              <i class="fas fa-envelope me-1"></i> Report Issue
-            </a>
-          </div>
+<% if (status === 404) { %>
+  <!-- 404 Page Not Found Layout -->
+  <body>
+    <div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
+      <div class="row w-100">
+        <!-- Text Section -->
+        <div class="col-md-6 d-flex flex-column justify-content-center align-items-start ps-md-5 text-center text-md-start">
+          <h1 class="display-2 fw-bold text-danger mb-3">404 - Page Not Found</h1>
+          <p class="lead text-muted mb-4">
+            The page you’re looking for doesn’t exist or has been moved.
+          </p>
+          <a href="/" class="btn btn-dark btn-lg px-4">
+            <i class="fas fa-home me-2"></i>Go Home
+          </a>
+        </div>
 
+        <!-- Image Section -->
+        <div class="col-md-6 d-none d-md-block">
+          <img src="/images/404error.png" alt="404 Image" class="img-fluid rounded-end w-100 h-100 object-fit-cover" />
         </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
+<% } else { %>
+  <!-- General Error Layout -->
+  <body>
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 70vh">
+      <div class="card border-0 shadow-lg w-100 w-md-75 w-lg-50">
+        <div class="card-body p-0">
+          <div class="alert alert-danger m-0 text-center rounded-0" role="alert">
+            <h1 class="display-1"><i class="fas fa-exclamation-triangle"></i></h1>
+            <h4 class="fw-semibold text-dark">Oops! Something went wrong</h4>
+            <p class="text-muted mb-3">Error <%= status %>: <%= message %></p>
+            <hr class="my-4" />
+            <div class="d-flex justify-content-center gap-3 mt-4">
+              <a href="/listings" class="btn btn-dark px-4">
+                <i class="fas fa-home me-1"></i> Home
+              </a>
+              <a href="mailto:support@wandernest.com" class="btn btn-outline-secondary px-4">
+                <i class="fas fa-envelope me-1"></i> Report Issue
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+<% } %>
