@@ -1,33 +1,80 @@
 <% layout('layouts/boilerplate') %>
 <body id="internalPage">
-  <div class="container my-5">
-    <!-- Page Heading -->
-    <h1 class="mb-4 fw-bold">Hotel Details</h1>
+  <div class="container d-flex justify-content-center my-5">
+    <div class="col-12 col-md-10 col-lg-8">
+      <!-- Page Heading -->
+      <h1 class="mb-4 fw-bold"><%= hotel.title %></h1>
 
-    <!-- Hero Image -->
-    <img
-      src="<%= hotel.image.url %>"
-      alt="<%= hotel.title %>"
-      class="img-fluid rounded-4 mb-4 w-100"
-      style="max-height: 500px; object-fit: cover;" />
+      <!-- Hero Image -->
+      <img
+        src="<%= hotel.image.url %>"
+        alt="<%= hotel.title %>"
+        class="img-fluid rounded-4 mb-4"
+        style="max-height: 400px; object-fit: cover; width: 100%" />
 
-    <!-- Hotel Information -->
-    <div class="mb-4">
-      <h2 class="fw-bold"><%= hotel.title %></h2>
-      <p class="text-muted mb-1 fs-5"><i class="fas fa-map-marker-alt me-2"></i><%= hotel.location %>, <%= hotel.country %></p>
-      <p class="fs-5"><%= hotel.description %></p>
-      <p class="fw-semibold fs-5">Price: ₹<%= hotel.price.toLocaleString("en-IN") %> / night</p>
-    </div>
+      <!-- Hotel Information -->
+      <div class="mb-4">
+        <p class="text-muted mb-1 responsive-text">
+          <i class="fas fa-map-marker-alt me-2"></i><%= hotel.location %>, <%=
+          hotel.country %>
+        </p>
+        <p class="responsive-text"><%= hotel.description %></p>
+        <p class="fw-semibold responsive-text">
+          Price: ₹<%= hotel.price.toLocaleString("en-IN") %> / night
+        </p>
+      </div>
 
-    <!-- Action Buttons -->
-    <div class="d-flex flex-wrap gap-3 mt-4">
-      <a href="/listings/<%= hotel._id %>/edit" class="btn btn-dark btn-lg">
-        <i class="fas fa-edit me-1"></i> Edit 
-      </a>
-      <form action="/listings/<%= hotel._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Delete this listing?');">
-        <button type="submit" class="btn btn-danger btn-lg">
-          <i class="fas fa-trash-alt me-1"></i> Delete 
-        </button>
+      <!-- Action Buttons -->
+      <div class="d-flex flex-wrap gap-3 mt-4">
+        <a href="/listings/<%= hotel._id %>/edit" class="btn btn-dark btn-lg">
+          <i class="fas fa-edit me-1"></i> Edit
+        </a>
+        <form
+          action="/listings/<%= hotel._id %>?_method=DELETE"
+          method="POST"
+          onsubmit="return confirm('Delete this listing?');">
+          <button type="submit" class="btn btn-danger btn-lg">
+            <i class="fas fa-trash-alt me-1"></i> Delete
+          </button>
+        </form>
+      </div>
+
+      <!-- Horizontal Line + Heading -->
+      <hr class="text-muted" />
+      <h4 class="fw-semibold mb-3">Write a Review</h4>
+
+      <!-- Review -->
+      <form
+        action="/listings/<%= hotel._id %>/reviews"
+        method="POST"
+        class="mt-3">
+        <!-- Star Rating -->
+        <div class="mb-3">
+          <label class="form-label d-block">Rating</label>
+          <div class="star-rating">
+            <% for (let i = 5; i >= 1; i--) { %>
+            <input
+              type="radio"
+              name="review[rating]"
+              id="star<%= i %>"
+              value="<%= i %>"
+              required />
+            <label for="star<%= i %>" title="<%= i %> stars">&#9733;</label>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Comment -->
+        <div class="mb-3">
+          <label for="comment" class="form-label">Comment</label>
+          <textarea
+            name="review[comment]"
+            class="form-control"
+            rows="3"
+            required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Submit Review</button>
       </form>
     </div>
   </div>
