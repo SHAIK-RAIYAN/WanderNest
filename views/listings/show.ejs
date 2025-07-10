@@ -39,15 +39,16 @@
         </form>
       </div>
 
-      <!-- Horizontal Line + Heading -->
-      <hr class="text-muted" />
+      <hr class="mt-3 text-muted" />
       <h4 class="fw-semibold mb-3">Write a Review</h4>
 
-      <!-- Review -->
+      <!-- Review Form -->
       <form
+        id="reviewForm"
         action="/listings/<%= hotel._id %>/reviews"
         method="POST"
-        class="mt-3">
+        class="mt-3 needs-validation"
+        novalidate>
         <!-- Star Rating -->
         <div class="mb-3">
           <label class="form-label d-block">Rating</label>
@@ -58,7 +59,7 @@
               name="review[rating]"
               id="star<%= i %>"
               value="<%= i %>"
-              required />
+              class="form-check-input" />
             <label for="star<%= i %>" title="<%= i %> stars">&#9733;</label>
             <% } %>
           </div>
@@ -71,11 +72,112 @@
             name="review[comment]"
             class="form-control"
             rows="3"
-            required></textarea>
+            id="comment"></textarea>
+        </div>
+
+        <!-- Combined Feedback -->
+        <div id="reviewFeedback" class="invalid-feedback">
+          Rating or comment is missing.
         </div>
 
         <button type="submit" class="btn btn-dark">Submit Review</button>
       </form>
+
+      <!-- Submitted Reviews -->
+      <hr class="mt-5 text-muted" />
+      <h4 class="fw-semibold mb-4">Guest Reviews</h4>
+
+      <% if (hotel.reviews.length === 0) { %>
+      <p class="text-muted fst-italic">
+        No reviews yet. Be the first to share your experience!
+      </p>
+      <% } else { %>
+      <div class="row gy-4">
+        <% hotel.reviews.forEach((review) => { %>
+        <div class="col-12 col-md-6 mb-4">
+          <!-- Added mb-4 here -->
+          <div class="d-flex align-items-start mb-2">
+            <!-- Avatar -->
+            <div
+              class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
+              style="width: 48px; height: 48px">
+              G
+            </div>
+            <div>
+              <strong>Guest</strong><br />
+              <small class="text-muted">
+                <%= new Date(review.createdAt).toLocaleDateString("en-IN", {
+                year: "numeric", month: "short", day: "numeric" }) %>
+              </small>
+            </div>
+          </div>
+
+          <!-- Star Rating Display -->
+          <div class="star-rating-display mb-2">
+            <% for (let i = 1; i <= 5; i++) { %> <% if (i <= review.rating) { %>
+            <i class="fas fa-star text-warning"></i>
+            <% } else { %>
+            <i class="far fa-star text-warning"></i>
+            <% } %> <% } %>
+          </div>
+
+          <!-- Comment -->
+          <p class="mb-2"><%= review.comment %></p>
+
+          <!-- Delete Button -->
+          <form
+            action="/listings/<%= hotel._id %>/reviews/<%= review._id %>?_method=DELETE"
+            method="POST"
+            onsubmit="return confirm('Are you sure you want to delete this review?');">
+            <button
+              type="submit"
+              class="btn btn-dark btn-sm rounded-pill d-inline-flex align-items-center"
+              style="width: fit-content">
+              <i class="fas fa-trash-alt text-white"></i>
+              <span class="ms-1 text-white">Delete</span>
+            </button>
+          </form>
+        </div>
+
+        <% }); %>
+      </div>
+      <% } %>
+
+      <script>
+        (function () {
+          "use strict";
+          const form = document.getElementById("reviewForm");
+          const feedback = document.getElementById("reviewFeedback");
+
+          form.addEventListener("submit", function (event) {
+            // Retrieve values
+            const ratingSelected = form.querySelector(
+              'input[name="review[rating]"]:checked'
+            );
+            const commentValue = form.querySelector("#comment").value.trim();
+
+            // Custom validation: both fields required
+            if (!ratingSelected || commentValue === "") {
+              event.preventDefault();
+              event.stopPropagation();
+              feedback.style.display = "block";
+            } else {
+              feedback.style.display = "none";
+            }
+            form.classList.add("was-validated");
+          });
+
+          // Hide feedback on input change
+          const inputs = form.querySelectorAll(
+            'input[name="review[rating]"], #comment'
+          );
+          inputs.forEach((input) => {
+            input.addEventListener("input", () => {
+              feedback.style.display = "none";
+            });
+          });
+        })();
+      </script>
     </div>
   </div>
 </body>
