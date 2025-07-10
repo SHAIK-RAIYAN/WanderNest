@@ -1,5 +1,6 @@
 //Before Restructuring the project
-
+//Before Express Router
+// all routes in index.js
 const express = require("express");
 const app = express();
 
