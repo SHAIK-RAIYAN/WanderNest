@@ -309,6 +309,17 @@ a.card-link:hover {
   margin-bottom: 20px;
 }
 
+.responsive-text {
+  font-size: 1rem; /* Base for mobile */
+}
+
+@media (min-width: 992px) {
+  .responsive-text {
+    font-size: 1.1rem; /* lg and above */
+  }
+}
+
+
 .price {
   font-size: 1.2em;
   color: #03dac6;
@@ -329,6 +340,31 @@ a.card-link:hover {
 .delete-btn:hover {
   background-color: #c0392b;
 }
+
+.star-rating {
+  direction: rtl;
+  display: inline-flex;
+  gap: 0.3rem;
+}
+
+.star-rating input[type="radio"] {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* Only apply color when selected */
+.star-rating input[type="radio"]:checked ~ label {
+  color: #ffc107;
+}
+
+
+
 
 /* New Listing Form Styles */
 form {
