@@ -16,12 +16,14 @@ app.engine("ejs", ejsMate);
 
 // MODELS
 const Listing = require("./models/listing.js");
+const Review = require("./models/review");
+
 // error handling
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError");
 
 //Joi error message handling
-const { listingSchema } = require("./utils/schemas");
+const { listingSchema, reviewSchema } = require("./utils/schemas");
 // middleware function/validateListing
 //to validate our input data
 function validateListing(req, res, next) {
@@ -32,7 +34,14 @@ function validateListing(req, res, next) {
   }
   next();
 }
-
+function validateLReview(req, res, next) {
+  const { error } = reviewSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((ele) => ele.message).join(", ");
+    throw new ExpressError(400, msg);
+  }
+  next();
+}
 
 // mongoose connectioon
 const mongoose = require("mongoose");
@@ -96,14 +105,15 @@ app.get(
   "/listings/:id",
   wrapAsync(async (req, res) => {
     let { id } = req.params;
-    let hotel = await Listing.findById(id);
+    let hotel = await Listing.findById(id).populate("reviews");
     res.render("listings/show.ejs", { hotel });
   })
 );
 
 // create new listing from new.ejs
 app.post(
-  "/listings",validateListing,
+  "/listings",
+  validateListing,
   wrapAsync(async (req, res) => {
     if (!req.body.listing) {
       next(new ExpressError(400, "send Valid Data"));
@@ -146,16 +156,51 @@ app.put(
   })
 );
 
+// Delete listing and also its reviews
 app.delete(
   "/listings/:id",
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);
+    //automatically all reviews are deleted from this listing as post middleware is defines in /model/listing.js
     res.redirect("/listings");
   })
 );
 
-//errors
+// POST route to add a review
+app.post(
+  "/listings/:id/reviews",
+  validateLReview,
+  wrapAsync(async (req, res) => {
+    const listing = await Listing.findById(req.params.id);
+    const { comment, rating } = req.body.review;
+    const review = new Review({ comment, rating });
+
+    listing.reviews.push(review);
+    await review.save();
+    await listing.save();
+
+    console.log("review saved");
+    res.redirect(`/listings/${listing._id}`);
+  })
+);
+
+// Delete a review and alsofrom listing
+app.delete(
+  "/listings/:id/reviews/:reviewId",
+  wrapAsync(async (req, res) => {
+    let { id, reviewId } = req.params;
+    await Listing.findByIdAndUpdate(id, {
+      $pull: { reviews: reviewId },
+    });
+    await Review.findByIdAndDelete(reviewId);
+
+    res.redirect(`/listings/${id}`);
+  })
+);
+
+//keep this part at end
+//errors Handling
 app.all("{*splat}", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
@@ -163,6 +208,5 @@ app.all("{*splat}", (req, res, next) => {
 app.use((err, req, res, next) => {
   let { status = 500, message = "Something went wrong" } = err;
   res.status(status).render("listings/error.ejs", { status, message });
-
 });
-
+////////
