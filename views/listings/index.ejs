@@ -1,53 +1,76 @@
-  <% layout('layouts/boilerplate') %>
+<% layout('layouts/boilerplate') %>
 
-  <body id="homePage">
-    <!-- Hero Section (visible md and up) -->
-    <div
-      id="heroSection"
-      class="d-none d-md-block position-relative w-100"
-      style="height: 500px; overflow: hidden">
-      <img
-        src="/images/homeTopImg.jpg"
-        alt="WanderNest Hero"
-        class="w-100 h-100 object-fit-cover" />
-      <div class="position-absolute bottom-0 start-0 p-4">
-        <h1 class="h1 text-white fw-bold">Discover Your Next Get-away</h1>
-        <p class="h5 text-white mb-0 fw-medium">
-          Find and book unique stays across India
-        </p>
-      </div>
+<body id="homePage">
+  <!-- Hero Section (visible md and up) -->
+  <div
+    id="heroSection"
+    class="d-none d-md-block position-relative w-100"
+    style="height: 500px; overflow: hidden">
+    <img
+      src="/images/homeTopImg.jpg"
+      alt="WanderNest Hero"
+      class="w-100 h-100 object-fit-cover" />
+    <div class="position-absolute bottom-0 start-0 p-4">
+      <h1 class="h1 text-white fw-bold">Discover Your Next Get-away</h1>
+      <p class="h5 text-white mb-0 fw-medium">
+        Find and book unique stays across India
+      </p>
     </div>
+  </div>
 
-    <!-- Add Button & Title -->
-    <div class="container-fluid text-center my-4">
-      <h1 class="mt-3">All Listings</h1>
+  <% if (success && success.length > 0) { %>
+  <div class="container mt-4">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= success[0] %>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"></button>
     </div>
+  </div>
+  <% } %> <% if (error && error.length > 0) { %>
+  <div class="container mt-4">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <%= error[0] %>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"></button>
+    </div>
+  </div>
+  <% } %>
 
-    <div class="container-fluid px-3 px-md-5">
-      <div class="row g-4">
-        <% alllistings.forEach(listing => { %>
-        <div class="col-12 col-md-6 col-lg-3">
-          <a href="/listings/<%= listing._id %>" class="card-link">
-            <div class="card border-0 rounded-0 h-100">
-              <div class="image-hover-container position-relative">
-                <img
-                  src="<%= listing.image.url %>"
-                  class="card-img-top rounded-4 listing-img"
-                  alt="Hotel_Image" />
-                <div class="img-hover-overlay rounded-4"></div>
-              </div>
+  <!-- Add Button & Title -->
+  <div class="container-fluid text-center my-4">
+    <h1 class="mt-3">All Listings</h1>
+  </div>
 
-              <div class="card-body text-start pt-1">
-                <p class="card-text mb-0 fw-bold"><b><%= listing.title %></b></p>
-                <p class="card-text text-muted">
-                  ₹<%= listing.price.toLocaleString("en-IN") %> / night
-                </p>
-              </div>
+  <div class="container-fluid px-3 px-md-5">
+    <div class="row g-4">
+      <% alllistings.forEach(listing => { %>
+      <div class="col-12 col-md-6 col-lg-3">
+        <a href="/listings/<%= listing._id %>" class="card-link">
+          <div class="card border-0 rounded-0 h-100">
+            <div class="image-hover-container position-relative">
+              <img
+                src="<%= listing.image.url %>"
+                class="card-img-top rounded-4 listing-img"
+                alt="Hotel_Image" />
+              <div class="img-hover-overlay rounded-4"></div>
             </div>
-          </a>
-        </div>
-        <% }); %>
-      </div>
-    </div>
 
-  </body>
+            <div class="card-body text-start pt-1">
+              <p class="card-text mb-0 fw-bold"><b><%= listing.title %></b></p>
+              <p class="card-text text-muted">
+                ₹<%= listing.price.toLocaleString("en-IN") %> / night
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</body>
