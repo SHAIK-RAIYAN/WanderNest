@@ -39,6 +39,10 @@ router.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let hotel = await Listing.findById(id).populate("reviews");
+    if (!hotel) {
+      req.flash("error", "Listing you requested for does not exist!.");
+      return res.redirect("/listings");
+    }
     res.render("listings/show.ejs", { hotel });
   })
 );
@@ -54,15 +58,22 @@ router.post(
     const newListing = new Listing(req.body.listing);
 
     await newListing.save();
+    req.flash("success", "Listing created successfully.");
+ //adding flash msg when new listing is added
     res.redirect("/listings");
   })
 );
 
+//edit route
 router.get(
   "/:id/edit",
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
+    if (!listing) {
+      req.flash("error", "Listing you requested for does not exist!.");
+      return res.redirect("/listings");
+    }
     res.render("listings/edit", { listing });
   })
 );
@@ -75,16 +86,18 @@ router.put(
     const updatedData = req.body.listing;
 
     // If image is empty string, set it to default image
-    if (!updatedData.image) {
+    if (
+      !updatedData.image ||
+      !updatedData.image.url
+    ) {
       updatedData.image = {
         url: "https://img.freepik.com/premium-vector/no-photos-icon-vector-image-can-be-used-spa_120816-264914.jpg?w=1380",
       };
-    } else {
-      // If image is string (not object), convert to correct format
-      updatedData.image = { url: updatedData.image };
-    }
+    } 
 
     await Listing.findByIdAndUpdate(id, req.body.listing);
+    req.flash("success", "Listing updated successfully.");
+//flash msg
     res.redirect(`/listings/${id}`);
   })
 );
@@ -96,6 +109,8 @@ router.delete(
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);
     //automatically all reviews are deleted from this listing as post middleware is defines in /model/listing.js
+    req.flash("success", "Listing deleted successfully.");
+// Flash message
     res.redirect("/listings");
   })
 );
