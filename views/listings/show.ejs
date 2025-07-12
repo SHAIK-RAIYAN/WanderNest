@@ -155,42 +155,6 @@
         <% }); %>
       </div>
       <% } %>
-
-      <script>
-        (function () {
-          "use strict";
-          const form = document.getElementById("reviewForm");
-          const feedback = document.getElementById("reviewFeedback");
-
-          form.addEventListener("submit", function (event) {
-            // Retrieve values
-            const ratingSelected = form.querySelector(
-              'input[name="review[rating]"]:checked'
-            );
-            const commentValue = form.querySelector("#comment").value.trim();
-
-            // Custom validation: both fields required
-            if (!ratingSelected || commentValue === "") {
-              event.preventDefault();
-              event.stopPropagation();
-              feedback.style.display = "block";
-            } else {
-              feedback.style.display = "none";
-            }
-            form.classList.add("was-validated");
-          });
-
-          // Hide feedback on input change
-          const inputs = form.querySelectorAll(
-            'input[name="review[rating]"], #comment'
-          );
-          inputs.forEach((input) => {
-            input.addEventListener("input", () => {
-              feedback.style.display = "none";
-            });
-          });
-        })();
-      </script>
     </div>
   </div>
 </body>
