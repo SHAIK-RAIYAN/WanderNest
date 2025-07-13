@@ -30,6 +30,11 @@ router.get(
 
 // new hotel btn from index.ejs
 router.get("/new", (req, res) => {
+  console.log(req.user);
+  if (!req.isAuthenticated()) {
+    req.flash("error","you must be logged in to create a listing !");
+    return res.redirect("/listings");
+  }
   res.render("listings/new");
 });
 
@@ -59,7 +64,7 @@ router.post(
 
     await newListing.save();
     req.flash("success", "Listing created successfully.");
- //adding flash msg when new listing is added
+    //adding flash msg when new listing is added
     res.redirect("/listings");
   })
 );
@@ -86,18 +91,15 @@ router.put(
     const updatedData = req.body.listing;
 
     // If image is empty string, set it to default image
-    if (
-      !updatedData.image ||
-      !updatedData.image.url
-    ) {
+    if (!updatedData.image || !updatedData.image.url) {
       updatedData.image = {
         url: "https://img.freepik.com/premium-vector/no-photos-icon-vector-image-can-be-used-spa_120816-264914.jpg?w=1380",
       };
-    } 
+    }
 
     await Listing.findByIdAndUpdate(id, req.body.listing);
     req.flash("success", "Listing updated successfully.");
-//flash msg
+    //flash msg
     res.redirect(`/listings/${id}`);
   })
 );
@@ -110,7 +112,7 @@ router.delete(
     await Listing.findByIdAndDelete(id);
     //automatically all reviews are deleted from this listing as post middleware is defines in /model/listing.js
     req.flash("success", "Listing deleted successfully.");
-// Flash message
+    // Flash message
     res.redirect("/listings");
   })
 );
