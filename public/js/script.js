@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Transparent ↔ Solid navbar on scroll
   const navbar = document.getElementById("mainNavbar");
   const hero = document.getElementById("heroSection");
+  const userIcon = document.querySelector(".user-icon");
+
   if (navbar && hero) {
     const heroHeight = hero.offsetHeight;
     const onScroll = () => {
@@ -26,6 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
         "navbar-transparent",
         window.scrollY < heroHeight
       );
+      // Toggle icon color
+      if (userIcon) {
+        userIcon.classList.toggle("text-dark", window.scrollY >= heroHeight);
+        userIcon.classList.toggle("text-white", window.scrollY < heroHeight);
+      }
     };
     onScroll();
     window.addEventListener("scroll", onScroll);
@@ -45,20 +52,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ────────────────────────────────────────────────────────────────────────────
   // Populate country dropdown on new/edit listings
-  const countrySelect = document.getElementById("country");
-  if (countrySelect && Array.isArray(window.countries)) {
-    const pageType = document.body.dataset.page; // 'new' or 'edit'
-    const selectedCountry = countrySelect.getAttribute("data-selected-country");
-    window.countries.forEach((country) => {
-      const opt = document.createElement("option");
-      opt.value = country;
-      opt.textContent = country;
-      if (pageType === "new" && country === "India") opt.selected = true;
-      if (pageType === "edit" && country === selectedCountry)
-        opt.selected = true;
-      countrySelect.appendChild(opt);
-    });
-  }
+  const select = document.getElementById("country");
+  const pageType = document.body.dataset.page;
+  const selectedCountry = select.getAttribute("data-selected-country");
+  countries.forEach((country) => {
+    const opt = document.createElement("option");
+    opt.value = country;
+    opt.textContent = country;
+    // Only select India by default on new.ejs
+    if (pageType === "new" && country === "India") {
+      opt.selected = true;
+    }
+    // On edit listing: select the current listing.country
+    if (pageType === "edit" && country === selectedCountry) {
+      opt.selected = true;
+    }
+    select.appendChild(opt);
+  });
 
   // ────────────────────────────────────────────────────────────────────────────
   // Bootstrap form validation (all .needs-validation)
