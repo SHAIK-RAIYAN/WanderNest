@@ -1,7 +1,7 @@
 // public/js/script.js
 
 document.addEventListener("DOMContentLoaded", () => {
-  "use strict";
+  ("use strict");
 
   // ────────────────────────────────────────────────────────────────────────────
   // Navbar toggle icon animation
@@ -53,22 +53,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // ────────────────────────────────────────────────────────────────────────────
   // Populate country dropdown on new/edit listings
   const select = document.getElementById("country");
-  const pageType = document.body.dataset.page;
-  const selectedCountry = select.getAttribute("data-selected-country");
-  countries.forEach((country) => {
-    const opt = document.createElement("option");
-    opt.value = country;
-    opt.textContent = country;
-    // Only select India by default on new.ejs
-    if (pageType === "new" && country === "India") {
-      opt.selected = true;
-    }
-    // On edit listing: select the current listing.country
-    if (pageType === "edit" && country === selectedCountry) {
-      opt.selected = true;
-    }
-    select.appendChild(opt);
-  });
+  if (select && Array.isArray(countries)) {
+    const pageType = document.body.dataset.page;
+    const selectedCountry = select.getAttribute("data-selected-country");
+
+    countries.forEach((country) => {
+      const opt = document.createElement("option");
+      opt.value = country;
+      opt.textContent = country;
+
+      // Default selection logic
+      if (pageType === "new" && country === "India") {
+        opt.selected = true;
+      }
+      if (pageType === "edit" && country === selectedCountry) {
+        opt.selected = true;
+      }
+
+      select.appendChild(opt);
+    });
+  }
 
   // ────────────────────────────────────────────────────────────────────────────
   // Bootstrap form validation (all .needs-validation)

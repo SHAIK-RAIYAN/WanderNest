@@ -1,4 +1,7 @@
-//After Restructuring the project (express router)
+// Loading env variables
+require("dotenv").config();
+require("./config/passport.js"); // register all passport strategies
+
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -10,8 +13,6 @@ const reviewRoutes = require("./routes/review.js"); //review route
 const session = require("express-session"); //for establishing a session
 const flash = require("connect-flash"); //to show a flash msg when work (like post) is done
 const passport = require("passport"); // passport for user login
-const LocalStrategy = require("passport-local"); //local login
-const User = require("./models/user"); //user model
 const authUserRoutes = require("./routes/authUser.js");
 
 app.set("views", path.join(__dirname, "views"));
@@ -45,9 +46,12 @@ app.use((req, res, next) => {
 
 app.use(passport.initialize()); //A middleware that initializes passport
 app.use(passport.session()); //the ability to identify its the same user as they browse from page to page in a single session.
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser()); //serializing or storing user info in the session
-passport.deserializeUser(User.deserializeUser());
+
+//adding user details to locals
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 // mongoose connectioon
 const mongoose = require("mongoose");
@@ -67,7 +71,7 @@ app.listen(3000, () => {
 });
 // root page
 app.get("/", (req, res) => {
-  res.send("root page")
+  res.send("root page");
   // res.redirect("/listings");
   //   res.render("home");
 });
