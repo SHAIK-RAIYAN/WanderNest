@@ -20,7 +20,6 @@ body#internalPage {
   }
 }
 
-
 h1,
 .navbar-brand {
   font-family: "Raleway", sans-serif;
@@ -136,7 +135,6 @@ a:hover {
   }
 }
 
-
 .navbar-toggler {
   box-shadow: none !important;
   outline: none !important;
@@ -179,8 +177,6 @@ a:hover {
 .btn-floating:hover i {
   transform: scale(1.2);
 }
-
-
 
 /* Index Page and Listing Card Styles */
 .listing-list h1 {
@@ -225,10 +221,6 @@ a:hover {
 
 .btn:hover {
   background-color: #4fd8e6;
-}
-
-.width-30vw {
-  min-width: 30vw;
 }
 
 .card {
@@ -319,7 +311,6 @@ a.card-link:hover {
   }
 }
 
-
 .price {
   font-size: 1.2em;
   color: #03dac6;
@@ -362,9 +353,6 @@ a.card-link:hover {
 .star-rating input[type="radio"]:checked ~ label {
   color: #ffc107;
 }
-
-
-
 
 /* New Listing Form Styles */
 form {
