@@ -10,6 +10,13 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   // username and password will be added by passportLocalMongoose
+  profileImage: {
+    type: String, 
+    default: "/images/default-profile.jpg",
+  },
+
+  googleId: String,
+  githubId: String,
 });
 
 userSchema.plugin(passportLocalMongoose); // adds username, hash, salt, etc.
