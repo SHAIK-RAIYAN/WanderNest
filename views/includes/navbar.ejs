@@ -68,9 +68,18 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
             style="padding: 0.3rem; border-radius: 50%">
+            <% if (currentUser?.profileImage) { %>
+            <img
+              src="<%= currentUser.profileImage %>"
+              alt="User"
+              class="rounded-circle"
+              style="width: 36px; height: 36px; object-fit: cover"
+              referrerpolicy="no-referrer" />
+            <% } else { %>
             <i
               class="fas fa-user-circle user-icon"
               style="font-size: 1.9rem"></i>
+            <% } %>
           </a>
           <ul
             class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0 text-center"
@@ -82,7 +91,8 @@
                 src="<%= currentUser.profileImage || '/images/default-profile.jpg' %>"
                 alt="Profile Picture"
                 class="rounded-circle shadow-sm"
-                style="width: 80px; height: 80px; object-fit: cover" />
+                style="width: 60px; height: 60px; object-fit: cover"
+                referrerpolicy="no-referrer" />
             </li>
             <!-- Username -->
             <li>
