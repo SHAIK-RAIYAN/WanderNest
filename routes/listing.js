@@ -8,7 +8,11 @@ const Listing = require("../models/listing.js");
 const { listingSchema } = require("../utils/schemas");
 const ExpressError = require("../utils/ExpressError");
 
-const { isLoggedIn } = require("../middleware/middleware.js");
+const {
+  isLoggedIn,
+  isListingOwnerOrAdmin,
+  storeReturnTo,
+} = require("../middleware/middleware.js");
 
 // middleware function/validateListing
 //to validate our input data
@@ -43,7 +47,7 @@ router.get(
     let hotel = await Listing.findById(id)
       .populate({
         path: "reviews",
-        populate: { path: "owner" },
+        populate: { path: "author" },
       })
       .populate({ path: "owner", select: "username profileImage createdAt" });
     if (!hotel) {
@@ -89,7 +93,7 @@ router.get(
 
 router.put(
   "/:id",
-  isLoggedIn,
+  isLoggedIn,isListingOwnerOrAdmin,
   validateListing,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
@@ -113,6 +117,7 @@ router.put(
 router.delete(
   "/:id",
   isLoggedIn,
+  isListingOwnerOrAdmin,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);
