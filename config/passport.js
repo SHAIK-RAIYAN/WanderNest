@@ -1,6 +1,6 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local"); //for local login
-const GoogleStrategy = require("passport-google-oauth20").Strategy;//google login
+const GoogleStrategy = require("passport-google-oauth20").Strategy; //google login
 const GitHubStrategy = require("passport-github").Strategy; //github login
 
 const User = require("../models/user");
@@ -28,6 +28,8 @@ function configurePassport() {
               googleId: profile.id,
               email: profile.emails?.[0]?.value,
               profileImage: profile.photos?.[0]?.value,
+              isAdmin:
+                profile.emails?.[0]?.value === "shaikraiyan2005@gmail.com", //check admin 
             });
           }
           return done(null, user);
@@ -55,6 +57,8 @@ function configurePassport() {
               githubId: profile.id,
               email: profile.emails?.[0]?.value,
               profileImage: profile.photos?.[0]?.value,
+              isAdmin:
+                profile.emails?.[0]?.value === "shaikraiyan2005@gmail.com", //check admin
             });
           }
           return done(null, user);
