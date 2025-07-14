@@ -16,7 +16,7 @@ const reviewSchema = new mongoose.Schema({
     default: Date.now,
   },
 
-  owner: {
+  author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
