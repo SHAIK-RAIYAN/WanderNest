@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 app.use(passport.initialize()); //A middleware that initializes passport
 app.use(passport.session()); //the ability to identify its the same user as they browse from page to page in a single session.
 
-//adding user details to locals
+//adding user details to locals so that it can be accessed anywhere in files
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
