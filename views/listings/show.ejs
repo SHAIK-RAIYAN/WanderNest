@@ -36,6 +36,33 @@
           Price: ₹<%= hotel.price.toLocaleString("en-IN") %> / night
         </p>
       </div>
+      <!-- Hosted By -->
+      <div class="d-flex align-items-center mb-4">
+        <% if (hotel.owner) { %> <% if (hotel.owner.profileImage) { %>
+        <img
+          src="<%= hotel.owner.profileImage %>"
+          alt="<%= hotel.owner.username %>"
+          class="rounded-circle"
+          style="width: 36px; height: 36px; object-fit: cover"
+          referrerpolicy="no-referrer" />
+        <% } else { %>
+        <i class="fas fa-user-circle user-icon" style="font-size: 1.9rem"></i>
+        <% } %>
+
+        <div class="ms-2">
+          <h6 class="fw-semibold mb-0">
+            Hosted by <%= hotel.owner.username %>
+          </h6>
+          <% if (hotel.owner.createdAt) { %>
+          <small class="text-muted">
+            Member since <%= new
+            Date(hotel.owner.createdAt).toLocaleDateString("en-IN", { month:
+            "short", year: "numeric", }) %>
+          </small>
+          <% } %>
+        </div>
+        <% } %>
+      </div>
 
       <!-- Action Buttons -->
       <div class="d-flex flex-wrap gap-3 mt-4">
