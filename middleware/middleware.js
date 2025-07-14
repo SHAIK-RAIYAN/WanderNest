@@ -19,7 +19,7 @@ module.exports.storeReturnTo = (req, res, next) => {
   next();
 };
 
-const isListingownerOrAdmin = async (req, res, next) => {
+module.exports.isListingOwnerOrAdmin = async (req, res, next) => {
   const { id } = req.params;
   const listing = await Listing.findById(id);
   if (!listing) {
@@ -33,14 +33,14 @@ const isListingownerOrAdmin = async (req, res, next) => {
   return res.redirect(`/listings/${id}`);
 };
 
-const isReviewownerOrAdmin = async (req, res, next) => {
+module.exports.isReviewAuthorOrAdmin = async (req, res, next) => {
   const { id, reviewId } = req.params;
   const review = await Review.findById(reviewId);
   if (!review) {
     req.flash("error", "Review not found");
     return res.redirect(`/listings/${id}`);
   }
-  if (review.owner.equals(req.user._id) || req.user.isAdmin) {
+  if (review.author.equals(req.user._id) || req.user.isAdmin) {
     return next();
   }
   req.flash("error", "You do not have permission");
