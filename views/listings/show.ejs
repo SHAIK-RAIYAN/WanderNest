@@ -3,14 +3,15 @@
   <div class="container d-flex justify-content-center my-5">
     <div class="col-12 col-md-10 col-lg-8">
       <% if (success && success.length > 0) { %>
-      <div class="container mt-4">
+      <div class="alert-wrapper container mt-4">
         <div class="alert alert-info alert-dismissible fade show" role="alert">
           <%= success[0] %>
           <button
             type="button"
             class="btn-close"
             data-bs-dismiss="alert"
-            aria-label="Close"></button>
+            aria-label="Close"
+            onclick="this.closest('.alert-wrapper').remove()"></button>
         </div>
       </div>
       <% } %>
@@ -64,6 +65,7 @@
         <% } %>
       </div>
 
+      <%if(currentUser&&(hotel.owner&&hotel.owner._id.equals(currentUser._id)||currentUser.isAdmin)){%>
       <!-- Action Buttons -->
       <div class="d-flex flex-wrap gap-3 mt-4">
         <a href="/listings/<%= hotel._id %>/edit" class="btn btn-dark btn-lg">
@@ -78,6 +80,7 @@
           </button>
         </form>
       </div>
+      <% } %>
 
       <hr class="mt-3 text-muted" />
       <h4 class="fw-semibold mb-3">Write a Review</h4>
@@ -135,20 +138,33 @@
       <div class="row gy-4">
         <% hotel.reviews.forEach((review) => { %>
         <div class="col-12 col-md-6 mb-4">
-          <!-- Added mb-4 here -->
-          <div class="d-flex align-items-start mb-2">
+          <!-- Reviewer Info -->
+          <div class="d-flex align-items-center mb-2">
             <!-- Avatar -->
+            <% if (review.author && review.author.profileImage) { %>
+            <img
+              src="<%= review.author.profileImage %>"
+              alt="<%= review.author.username %>"
+              class="rounded-circle shadow-sm me-2"
+              style="width: 32px; height: 32px; object-fit: cover"
+              referrerpolicy="no-referrer" />
+            <% } else { %>
             <div
-              class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
-              style="width: 48px; height: 48px">
-              G
+              class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+              style="width: 32px; height: 32px">
+              <i class="fas fa-user text-white small"></i>
             </div>
-            <div>
-              <strong>Guest</strong><br />
-              <small class="text-muted">
+            <% } %>
+
+            <!-- Username + Date -->
+            <div class="small">
+              <span class="fw-normal"
+                ><%= review.author ? review.author.username : "Guest" %></span
+              ><br />
+              <span class="text-muted small">
                 <%= new Date(review.createdAt).toLocaleDateString("en-IN", {
                 year: "numeric", month: "short", day: "numeric" }) %>
-              </small>
+              </span>
             </div>
           </div>
 
@@ -164,7 +180,10 @@
           <!-- Comment -->
           <p class="mb-2"><%= review.comment %></p>
 
-          <!-- Delete Button -->
+          <!-- Delete Button (owner or admin only) -->
+          <% if (currentUser && (review.author &&
+          review.author._id.equals(currentUser._id) || currentUser.isAdmin)) {
+          %>
           <form
             action="/listings/<%= hotel._id %>/reviews/<%= review._id %>?_method=DELETE"
             method="POST"
@@ -177,8 +196,8 @@
               <span class="ms-1 text-white">Delete</span>
             </button>
           </form>
+          <% } %>
         </div>
-
         <% }); %>
       </div>
       <% } %>
