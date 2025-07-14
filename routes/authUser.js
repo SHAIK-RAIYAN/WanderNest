@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user");
 const wrapAsync = require("../utils/wrapAsync");
+const middleware = require("../middleware/middleware");
 
 //signup
 router.get("/signup", (req, res) => {
@@ -16,6 +17,11 @@ router.post(
       let { username, email, password } = req.body;
       const newuser = new User({ email, username });
       const registeredUser = await User.register(newuser, password);
+      //checking Admin
+      if (registeredUser.email === "shaikraiyan2005@gmail.com") {
+        registeredUser.isAdmin = true;
+        await registeredUser.save();
+      }
       req.login(registeredUser, (err) => {
         if (err) return next(err);
         req.flash("success", "Welcome to WanderNest!");
@@ -35,13 +41,16 @@ router.get("/login", (req, res) => {
 
 router.post(
   "/login",
+  middleware.storeReturnTo,
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true,
   }),
   (req, res) => {
+    const redirectUrl = res.locals.returnTo || "/listings";
+    delete req.session.returnTo; // if user log out and log in again then old returnto is used, so delete it
     req.flash("success", "Welcome back!");
-    res.redirect("/listings");
+    res.redirect(redirectUrl);
   }
 );
 
