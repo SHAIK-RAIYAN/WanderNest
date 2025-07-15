@@ -7,7 +7,12 @@
         <!-- Card-like Form Box -->
         <div class="border border-secondary-subtle rounded p-4">
           <h1 class="mb-4">Edit Listing</h1>
-          <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+          <form
+            action="/listings/<%= listing._id %>?_method=PUT"
+            method="POST"
+            class="needs-validation"
+            enctype="multipart/form-data"
+            novalidate>
             <!-- Title -->
             <div class="mb-3">
               <label for="title" class="form-label">Title:</label>
@@ -18,9 +23,7 @@
                 class="form-control"
                 value="<%= listing.title %>"
                 required />
-                <div class="invalid-feedback">
-                  Please enter a Title.
-                </div>
+              <div class="invalid-feedback">Please enter a Title.</div>
             </div>
 
             <!-- Description -->
@@ -34,9 +37,7 @@
                 required>
 <%= listing.description %></textarea
               >
-              <div class="invalid-feedback">
-                Please enter a Description.
-              </div>
+              <div class="invalid-feedback">Please enter a Description.</div>
             </div>
 
             <!-- Price + Country on same row -->
@@ -50,9 +51,7 @@
                   class="form-control"
                   value="<%= listing.price %>"
                   required />
-                  <div class="invalid-feedback">
-                    Please enter a Price.
-                  </div>
+                <div class="invalid-feedback">Please enter a Price.</div>
               </div>
               <div class="mb-3">
                 <label for="country" class="form-label">Country:</label>
@@ -64,24 +63,32 @@
                   data-selected-country="<%= listing.country %>">
                   <!-- Options will be populated via JS -->
                 </select>
-                <div class="invalid-feedback">
-                  Please select a Country.
-                </div>
+                <div class="invalid-feedback">Please select a Country.</div>
               </div>
             </div>
 
-            <!-- Image URL -->
+            <!-- Current Image Preview -->
             <div class="mb-3">
-              <label for="image" class="form-label">Image URL:</label>
+              <label class="form-label">Current Image:</label><br />
+              <img
+                src="<%= listing.image.url %>"
+                alt="Current Image"
+                class="img-fluid rounded"
+                width="200" />
+            </div>
+
+            <!-- Upload New Image -->
+            <div class="mb-3">
+              <label for="image" class="form-label"
+                >Upload New Image :</label
+              >
               <input
-                type="text"
+                type="file"
                 id="image"
-                name="listing[image][url]"
+                name="image"
                 class="form-control"
-                value="<%= listing.image.url %>" />
-                <div class="invalid-feedback">
-                  Please provide a Image URL.
-                </div>
+                accept="image/*" />
+              <div class="form-text">Leave blank to keep existing image.</div>
             </div>
 
             <!-- Location -->
@@ -94,9 +101,7 @@
                 class="form-control"
                 value="<%= listing.location %>"
                 required />
-                <div class="invalid-feedback">
-                  Please enter a Location.
-                </div>
+              <div class="invalid-feedback">Please enter a Location.</div>
             </div>
 
             <!-- Submit Button -->
