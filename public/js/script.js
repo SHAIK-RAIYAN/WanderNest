@@ -115,4 +115,23 @@ document.addEventListener("DOMContentLoaded", () => {
         input.addEventListener("input", () => (feedback.style.display = "none"))
       );
   }
+
+  // ────────────────────────────────────────────────────────────────────────────
+  // Read more section in comment in show.ejs
+  const toggles = document.querySelectorAll(".read-more-toggle");
+
+  toggles.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const p = btn.previousElementSibling;
+      const fullText = p.getAttribute("data-full");
+
+      if (btn.textContent === "Read more") {
+        p.textContent = fullText;
+        btn.textContent = "Read less";
+      } else {
+        p.textContent = fullText.slice(0, 200) + "...";
+        btn.textContent = "Read more";
+      }
+    });
+  });
 });
