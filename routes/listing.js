@@ -11,12 +11,18 @@ const {
 
 const listingController = require("../controllers/listing.js");
 
+//cloud storage
+const multer = require("multer");
+const { storage } = require("../cloudConfig/cloudinary");
+const upload = multer({ storage }); //store files in cloudinary storage
+
 router
   .route("/")
   .get(wrapAsync(listingController.index)) //index route
   .post(
     // create new listing from new.ejs
     isLoggedIn,
+    upload.single("image"), //upload image
     validateListing,
     wrapAsync(listingController.createListing)
   );
@@ -31,6 +37,7 @@ router
     //updateListing
     isLoggedIn,
     isListingOwnerOrAdmin,
+    upload.single("image"),
     validateListing,
     wrapAsync(listingController.updateListing)
   )
