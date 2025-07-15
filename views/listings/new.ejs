@@ -10,6 +10,7 @@
             action="/listings"
             method="POST"
             class="needs-validation"
+            enctype="multipart/form-data"
             novalidate>
             <!-- Title -->
             <div class="mb-3">
@@ -60,15 +61,18 @@
               </div>
             </div>
 
-            <!-- Image URL -->
+            <!-- Image file upload -->
             <div class="mb-3">
-              <label for="image" class="form-label">Image URL:</label>
+              <label for="image" class="form-label">Upload Image:</label>
+
               <input
-                type="text"
+                type="file"
                 id="image"
-                name="listing[image][url]"
-                class="form-control" />
-              <div class="invalid-feedback">Please provide a Image URL.</div>
+                name="image"
+                class="form-control"
+                accept="image/*"
+                required />
+              <div class="invalid-feedback">Please provide an Image.</div>
             </div>
 
             <!-- Location -->
