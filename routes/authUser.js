@@ -1,72 +1,37 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const User = require("../models/user");
 const wrapAsync = require("../utils/wrapAsync");
 const middleware = require("../middleware/middleware");
+const userController = require("../controllers/authUser");
 
 //signup
-router.get("/signup", (req, res) => {
-  res.render("users/signup");
-});
-
-router.post(
-  "/signup",
-  wrapAsync(async (req, res) => {
-    try {
-      let { username, email, password } = req.body;
-      const newuser = new User({ email, username });
-      const registeredUser = await User.register(newuser, password);
-      //checking Admin
-      if (registeredUser.email === "shaikraiyan2005@gmail.com") {
-        registeredUser.isAdmin = true;
-        await registeredUser.save();
-      }
-      req.login(registeredUser, (err) => {
-        if (err) return next(err);
-        req.flash("success", "Welcome to WanderNest!");
-        res.redirect("/listings");
-      });
-    } catch (e) {
-      req.flash("error", e.message);
-      res.redirect("/signup");
-    }
-  })
-);
+router
+  .route("/signup")
+  .get(userController.renderSignupForm)
+  .post(wrapAsync(userController.signup));
 
 //login
-router.get("/login", (req, res) => {
-  res.render("users/login");
-});
-
-router.post(
-  "/login",
-  middleware.storeReturnTo,
-  passport.authenticate("local", {
-    failureRedirect: "/login",
-    failureFlash: true,
-  }),
-  (req, res) => {
-    const redirectUrl = res.locals.returnTo || "/listings";
-    delete req.session.returnTo; // if user log out and log in again then old returnto is used, so delete it
-    req.flash("success", "Welcome back!");
-    res.redirect(redirectUrl);
-  }
-);
+router
+  .route("/login")
+  .get(userController.renderLoginForm)
+  .post(
+    middleware.storeReturnTo,
+    passport.authenticate("local", {
+      //for login the local user
+      failureRedirect: "/login",
+      failureFlash: true,
+    }),
+    userController.localLoginSuccess
+  );
 
 // Logout
-router.get("/logout", (req, res, next) => {
-  req.logout((err) => {
-    if (err) return next(err);
-    req.flash("success", "Logged out successfully.");
-    res.redirect("/listings");
-  });
-});
+router.get("/logout", userController.logout);
 
 // Google OAuth login
 router.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", { scope: ["profile", "email"] }) //for login the google user
 );
 
 // Google OAuth callback
@@ -76,16 +41,13 @@ router.get(
     failureRedirect: "/login",
     failureFlash: true,
   }),
-  (req, res) => {
-    req.flash("success", `Welcome back, ${req.user.username}!`);
-    res.redirect("/listings");
-  }
+  userController.googleLoginSuccess
 );
 
 // GitHub OAuth login
 router.get(
   "/auth/github",
-  passport.authenticate("github", { scope: ["user:email"] })
+  passport.authenticate("github", { scope: ["user:email"] }) //for login the github user
 );
 
 // GitHub OAuth callback
@@ -95,10 +57,7 @@ router.get(
     failureRedirect: "/login",
     failureFlash: true,
   }),
-  (req, res) => {
-    req.flash("success", `Welcome back, ${req.user.username}!`);
-    res.redirect("/listings");
-  }
+  userController.githubLoginSuccess
 );
 
 module.exports = router;
