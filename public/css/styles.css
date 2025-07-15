@@ -354,6 +354,12 @@ a.card-link:hover {
   color: #ffc107;
 }
 
+.read-more-toggle {
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+
 /* New Listing Form Styles */
 form {
   display: flex;
