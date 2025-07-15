@@ -1,7 +1,6 @@
 const Listing = require("../models/listing.js");
 const ExpressError = require("../utils/ExpressError");
 
-
 module.exports.index = async (req, res) => {
   let alllistings = await Listing.find({});
   res.render("listings/index.ejs", { alllistings });
@@ -31,6 +30,14 @@ module.exports.createListing = async (req, res) => {
     next(new ExpressError(400, "send Valid Data"));
   }
   const newListing = new Listing(req.body.listing);
+
+  if (req.file) {
+    newListing.image = {
+      url: req.file.path,
+      filename: req.file.filename,
+    };
+  }
+
   newListing.owner = req.user._id; // Assign the log-in user as owner
   await newListing.save();
   req.flash("success", "Listing created successfully.");
@@ -45,6 +52,7 @@ module.exports.renderEditForm = async (req, res) => {
     req.flash("error", "Listing you requested for does not exist!.");
     return res.redirect("/listings");
   }
+
   res.render("listings/edit", { listing });
 };
 
@@ -52,14 +60,37 @@ module.exports.updateListing = async (req, res) => {
   const { id } = req.params;
   const updatedData = req.body.listing;
 
-  // If image is empty string, set it to default image
-  if (!updatedData.image || !updatedData.image.url) {
-    updatedData.image = {
-      url: "https://img.freepik.com/premium-vector/no-photos-icon-vector-image-can-be-used-spa_120816-264914.jpg?w=1380",
+  const listing = await Listing.findById(id);
+  if (!listing) {
+    req.flash("error", "Listing not found.");
+    return res.redirect("/listings");
+  }
+
+  // Update basic fields
+  Object.assign(listing, updatedData);
+
+  // If a new image was uploaded
+  if (req.file) {
+    // Delete the old image from Cloudinary
+    if (listing.image?.filename) {
+      await cloudinary.uploader.destroy(listing.image.filename);
+    }
+    // Assign new image
+    listing.image = {
+      url: req.file.path,
+      filename: req.file.filename,
     };
   }
 
-  await Listing.findByIdAndUpdate(id, req.body.listing);
+  // If no image in form & no previous image, assign default
+  if (!req.file && (!listing.image || !listing.image.url)) {
+    listing.image = {
+      url: "https://img.freepik.com/premium-vector/no-photos-icon-vector-image-can-be-used-spa_120816-264914.jpg?w=1380",
+      filename: "default-placeholder",
+    };
+  }
+
+  await listing.save();
   req.flash("success", "Listing updated successfully.");
   //flash msg
   res.redirect(`/listings/${id}`);
@@ -67,6 +98,20 @@ module.exports.updateListing = async (req, res) => {
 
 module.exports.deleteListing = async (req, res) => {
   const { id } = req.params;
+
+  const listing = await Listing.findById(id);
+  if (!listing) {
+    req.flash("error", "Listing not found.");
+    return res.redirect("/listings");
+  }
+  // Delete image from Cloudinary if it exists and is not a default placeholder
+  if (
+    listing.image?.filename &&
+    listing.image.filename !== "default-placeholder"
+  ) {
+    await cloudinary.uploader.destroy(listing.image.filename);
+  }
+  
   await Listing.findByIdAndDelete(id);
   //automatically all reviews are deleted from this listing as post middleware is defines in /model/listing.js
   req.flash("success", "Listing deleted successfully.");
