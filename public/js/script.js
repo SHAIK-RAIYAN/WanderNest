@@ -134,4 +134,31 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // ────────────────────────────────────────────────────────────────────────────
+  // Map
+  const mapEl = document.getElementById("map");
+  if (!mapEl) return;
+
+  const lat = parseFloat(mapEl.dataset.lat);
+  const lng = parseFloat(mapEl.dataset.lng);
+  const title = mapEl.dataset.title;
+  const location = mapEl.dataset.location;
+
+  if (isNaN(lat) || isNaN(lng)) {
+    console.error("Invalid coordinates provided for map.");
+    return;
+  }
+
+  const map = L.map("map", { scrollWheelZoom: false }).setView([lat, lng], 10);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap contributors",
+    maxZoom: 18,
+  }).addTo(map);
+
+  L.marker([lat, lng])
+    .addTo(map)
+    .bindPopup(`<strong>${title}</strong><br>${location}`)
+    .openPopup();
 });
