@@ -1,6 +1,24 @@
 const Listing = require("../models/listing.js");
 const ExpressError = require("../utils/ExpressError");
 
+// function to geocode via Nominatim
+async function geocodeLocation(location) {
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+      location
+    )}`
+  );
+  const data = await res.json();
+
+  if (!data || data.length === 0) {
+    // no geo data
+    return null;
+  }
+
+  const { lat, lon } = data[0];
+  return { type: "Point", coordinates: [parseFloat(lon), parseFloat(lat)] };
+}
+
 module.exports.index = async (req, res) => {
   let alllistings = await Listing.find({});
   res.render("listings/index.ejs", { alllistings });
@@ -30,6 +48,17 @@ module.exports.createListing = async (req, res) => {
     next(new ExpressError(400, "send Valid Data"));
   }
   const newListing = new Listing(req.body.listing);
+
+  // geocode once
+  const geo = await geocodeLocation(req.body.listing.location);
+   if (!geo) {
+     req.flash(
+       "error",
+       `"${req.body.listing.location}" could not be located. Please enter a valid address or city.`
+     );
+     return res.redirect("/listings/new");
+   }
+  newListing.geometry = geo;
 
   if (req.file) {
     newListing.image = {
@@ -65,6 +94,7 @@ module.exports.updateListing = async (req, res) => {
     req.flash("error", "Listing not found.");
     return res.redirect("/listings");
   }
+  const originalLocation = listing.location;
 
   // Update basic fields
   Object.assign(listing, updatedData);
@@ -90,6 +120,19 @@ module.exports.updateListing = async (req, res) => {
     };
   }
 
+  // if location was changed, re‑geocode
+  if (updatedData.location && updatedData.location !== originalLocation) {
+    const geo = await geocodeLocation(updatedData.location);
+    if (!geo) {
+      req.flash(
+        "error",
+        `"${updatedData.location}" could not be located. Please enter a valid address or city.`
+      );
+      return res.redirect(`/listings/${id}/edit`);
+    }
+    listing.geometry = geo;
+  }
+
   await listing.save();
   req.flash("success", "Listing updated successfully.");
   //flash msg
@@ -111,7 +154,7 @@ module.exports.deleteListing = async (req, res) => {
   ) {
     await cloudinary.uploader.destroy(listing.image.filename);
   }
-  
+
   await Listing.findByIdAndDelete(id);
   //automatically all reviews are deleted from this listing as post middleware is defines in /model/listing.js
   req.flash("success", "Listing deleted successfully.");
