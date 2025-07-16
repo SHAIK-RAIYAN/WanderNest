@@ -4,6 +4,22 @@
   <div class="container my-5">
     <div class="row justify-content-center">
       <div class="col-12 col-md-11 col-lg-9 col-xl-8">
+        <% if (error && error.length > 0) { %>
+        <div class="alert-wrapper container mt-4">
+          <div
+            class="alert alert-danger alert-dismissible fade show"
+            role="alert">
+            <%= error[0] %>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onclick="this.closest('.alert-wrapper').remove()"></button>
+          </div>
+        </div>
+        <% } %>
+        
         <!-- Card-like Form Box -->
         <div class="border border-secondary-subtle rounded p-4">
           <h1 class="mb-4">Edit Listing</h1>
