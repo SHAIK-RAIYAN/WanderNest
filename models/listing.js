@@ -45,7 +45,21 @@ const listingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  geometry: {
+    type: {
+      type: String, // Always 'Point'
+      enum: ["Point"],
+      required: true,
+    },
+    coordinates: {
+      type: [Number], // [longitude, latitude]
+      required: true,
+    },
+  },
 });
+
+// Create 2dsphere index for geometry field
+listingSchema.index({ geometry: '2dsphere' });
 
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;
