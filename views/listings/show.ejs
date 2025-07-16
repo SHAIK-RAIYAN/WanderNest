@@ -56,9 +56,7 @@
           </h6>
           <% if (hotel.owner.createdAt) { %>
           <small class="text-muted">
-            Member since <%= new
-            Date(hotel.owner.createdAt).toLocaleDateString("en-IN", { month:
-            "short", year: "numeric", }) %>
+          Member since <%=new Date(hotel.owner.createdAt).toLocaleDateString("en-IN",{ month:"short", year: "numeric", }) %>
           </small>
           <% } %>
         </div>
@@ -178,7 +176,7 @@
           </div>
 
           <!-- Comment -->
-          <p class="mb-2 review-comment" data-full='<%= review.comment.replace(/"/g, '&quot;') %>'>
+          <p class="mb-2 review-comment" data-full="<%= review.comment.replace(/"/g, '&quot;') %>">
             <%= review.comment.length > 200 ? review.comment.slice(0, 200) + "..." : review.comment %>
           </p>
           <% if (review.comment.length > 200) { %>
@@ -187,9 +185,7 @@
 
 
           <!-- Delete Button (owner or admin only) -->
-          <% if (currentUser && (review.author &&
-          review.author._id.equals(currentUser._id) || currentUser.isAdmin)) {
-          %>
+          <%if(currentUser&&(review.author&&review.author._id.equals(currentUser._id)||currentUser.isAdmin)){%>
           <form
             action="/listings/<%= hotel._id %>/reviews/<%= review._id %>?_method=DELETE"
             method="POST"
@@ -207,6 +203,38 @@
         <% }); %>
       </div>
       <% } %>
+<hr class="mt-5 text-muted">
+
+<!-- Location Map Section -->
+<div class="card my-5 shadow-sm">
+  <div class="card-header bg-dark text-white">
+    <h5 class="mb-0"><i class="fas fa-map-marked-alt me-2" ></i>Location</h5>
+  </div>
+  <div class="card-body p-0">
+    <% if (hotel.geometry && hotel.geometry.coordinates && hotel.geometry.coordinates.length === 2) { %>
+
+    <div id="map" class="w-100 map-container" 
+    data-title="<%= hotel.title %>"
+    data-location="<%= hotel.location %>"
+    data-lat="<%= hotel.geometry.coordinates[1] %>"
+    data-lng="<%= hotel.geometry.coordinates[0] %>"
+></div>
+<% } else { %>
+<div class="p-4 text-danger">
+    <strong>Map unavailable:</strong> We couldn't find a map location for this property.
+  </div>
+<% } %>
+  </div>
+  <a
+    href="https://www.google.com/maps/search/?api=1&query=<%= encodeURIComponent(hotel.location + ', ' + hotel.country) %>"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="btn btn-outline-dark mt-2 rounded-pill px-4"
+  >
+    <i class="fas fa-map-marker-alt me-1"></i> View on Google Maps
+  </a>
+</div>
+
     </div>
   </div>
 </body>
