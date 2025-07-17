@@ -52,12 +52,12 @@ module.exports.logout = (req, res, next) => {
 };
 
 module.exports.googleLoginSuccess = (req, res) => {
-  req.flash("success", `Welcome back, ${req.user.username}!`);
+  req.flash("success", `Welcome back, "${req.user.username}"!`);
   res.redirect("/listings");
 };
 
 module.exports.githubLoginSuccess = (req, res) => {
-  req.flash("success", `Welcome back, ${req.user.username}!`);
+  req.flash("success", `Welcome back, "${req.user.username}"!`);
   res.redirect("/listings");
 };
 

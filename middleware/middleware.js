@@ -14,6 +14,7 @@ module.exports.isLoggedIn = (req, res, next) => {
     req.flash("error", "You must be logged in.");
     return res.redirect("/login");
   }
+  next();
 };
 
 //storing redirecting path to send user to same path from where he came to login page
