@@ -16,11 +16,18 @@ module.exports.signup = async (req, res) => {
     }
     req.login(registeredUser, (err) => {
       if (err) return next(err);
-      req.flash("success", "Welcome to WanderNest!");
+      req.flash(
+        "success",
+        "Welcome to WanderNest, ${registeredUser.username}!"
+      );
       res.redirect("/listings");
     });
   } catch (e) {
-    req.flash("error", e.message);
+    if (e.message.includes("duplicate key") || e.message.includes("exists")) {
+      req.flash("error", "Username or email already in use.");
+    } else {
+      req.flash("error", e.message);
+    }
     res.redirect("/signup");
   }
 };
@@ -32,14 +39,14 @@ module.exports.renderLoginForm = (req, res) => {
 module.exports.localLoginSuccess = (req, res) => {
   const redirectUrl = res.locals.returnTo || "/listings";
   delete req.session.returnTo; // if user log out and log in again then old returnto is used, so delete it
-  req.flash("success", "Welcome back!");
+  req.flash("success", "Welcome back, ${req.user.username}!");
   res.redirect(redirectUrl);
 };
 
 module.exports.logout = (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
-    req.flash("success", "Logged out successfully.");
+    req.flash("success", "You’ve been logged out.");
     res.redirect("/listings");
   });
 };
@@ -79,10 +86,11 @@ module.exports.updateProfile = async (req, res) => {
     req.login(user, function (err) {
       //Passport’s way of re-establishing a valid session after user data changes
       if (err) return next(err);
-      req.flash("success", "Profile updated.");
+      req.flash("success", "Your profile has been updated.");
       return res.redirect("/profile");
     });
   } catch (err) {
-    next(err);
+    req.flash("error", "Failed to update profile. Please try again.");
+    return res.redirect("/profile");
   }
 };

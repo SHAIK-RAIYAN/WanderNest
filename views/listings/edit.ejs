@@ -22,7 +22,7 @@
         
         <!-- Card-like Form Box -->
         <div class="border border-secondary-subtle rounded p-4">
-          <h1 class="mb-4">Edit Listing</h1>
+          <h1 class="mb-4">Edit Stay Details</h1>
           <form
             action="/listings/<%= listing._id %>?_method=PUT"
             method="POST"
@@ -31,7 +31,7 @@
             novalidate>
             <!-- Title -->
             <div class="mb-3">
-              <label for="title" class="form-label">Title:</label>
+              <label for="title" class="form-label">Stay Name:</label>
               <input
                 type="text"
                 id="title"
@@ -39,7 +39,7 @@
                 class="form-control"
                 value="<%= listing.title %>"
                 required />
-              <div class="invalid-feedback">Please enter a Title.</div>
+              <div class="invalid-feedback">Please enter a stay name.</div>
             </div>
 
             <!-- Description -->
@@ -53,13 +53,13 @@
                 required>
 <%= listing.description %></textarea
               >
-              <div class="invalid-feedback">Please enter a Description.</div>
+              <div class="invalid-feedback">Please enter a description for the stay.</div>
             </div>
 
             <!-- Price + Country on same row -->
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label for="price" class="form-label">Price (₹):</label>
+                <label for="price" class="form-label">Price per Night (₹):</label>
                 <input
                   type="number"
                   id="price"
@@ -85,7 +85,7 @@
 
             <!-- Current Image Preview -->
             <div class="mb-3">
-              <label class="form-label">Current Image:</label><br />
+              <label class="form-label">Current Cover Image:</label><br />
               <img
                 src="<%= listing.image.url %>"
                 alt="Current Image"
@@ -96,7 +96,7 @@
             <!-- Upload New Image -->
             <div class="mb-3">
               <label for="image" class="form-label"
-                >Upload New Image :</label
+                >Change Cover Image :</label
               >
               <input
                 type="file"
@@ -104,12 +104,12 @@
                 name="image"
                 class="form-control"
                 accept="image/*" />
-              <div class="form-text">Leave blank to keep existing image.</div>
+              <div class="form-text">Leave blank to keep your current image.</div>
             </div>
 
             <!-- Location -->
             <div class="mb-3">
-              <label for="location" class="form-label">Location:</label>
+              <label for="location" class="form-label">City or Address:</label>
               <input
                 type="text"
                 id="location"
@@ -123,7 +123,7 @@
             <!-- Submit Button -->
             <div class="d-grid">
               <button type="submit" class="btn btn-dark fw-bold">
-                Update Listing
+                Save Changes
               </button>
             </div>
           </form>

@@ -52,7 +52,10 @@ module.exports.showListing = async (req, res) => {
     })
     .populate({ path: "owner", select: "username profileImage createdAt" });
   if (!hotel) {
-    req.flash("error", "Listing you requested for does not exist!.");
+    req.flash(
+      "error",
+      "The stay you're looking for doesn't exist or may have been removed."
+    );
     return res.redirect("/listings");
   }
   res.render("listings/show.ejs", { hotel });
@@ -69,7 +72,7 @@ module.exports.createListing = async (req, res) => {
   if (!geo) {
     req.flash(
       "error",
-      `"${req.body.listing.location}" could not be located. Please enter a valid address or city.`
+      `We couldn't locate "${req.body.listing.location}". Please provide a valid location`
     );
     return res.redirect("/listings/new");
   }
@@ -84,7 +87,10 @@ module.exports.createListing = async (req, res) => {
 
   newListing.owner = req.user._id; // Assign the log-in user as owner
   await newListing.save();
-  req.flash("success", "Listing created successfully.");
+  req.flash(
+    "success",
+    "Your property has been successfully listed on WanderNest."
+  );
   //adding flash msg when new listing is added
   res.redirect("/listings");
 };
@@ -93,7 +99,10 @@ module.exports.renderEditForm = async (req, res) => {
   const { id } = req.params;
   const listing = await Listing.findById(id);
   if (!listing) {
-    req.flash("error", "Listing you requested for does not exist!.");
+    req.flash(
+      "error",
+      "The stay you're looking for doesn't exist or may have been removed."
+    );
     return res.redirect("/listings");
   }
 
@@ -106,7 +115,7 @@ module.exports.updateListing = async (req, res) => {
 
   const listing = await Listing.findById(id);
   if (!listing) {
-    req.flash("error", "Listing not found.");
+    req.flash("error", "We couldn't find that stay.");
     return res.redirect("/listings");
   }
   const originalLocation = listing.location;
@@ -141,7 +150,7 @@ module.exports.updateListing = async (req, res) => {
     if (!geo) {
       req.flash(
         "error",
-        `"${updatedData.location}" could not be located. Please enter a valid address or city.`
+        ` Location "${updatedData.location}" could not be verified. Please enter a valid city.`
       );
       return res.redirect(`/listings/${id}/edit`);
     }
@@ -149,7 +158,7 @@ module.exports.updateListing = async (req, res) => {
   }
 
   await listing.save();
-  req.flash("success", "Listing updated successfully.");
+  req.flash("success", "Your stay details have been updated successfully.");
   //flash msg
   res.redirect(`/listings/${id}`);
 };
@@ -159,7 +168,7 @@ module.exports.deleteListing = async (req, res) => {
 
   const listing = await Listing.findById(id);
   if (!listing) {
-    req.flash("error", "Listing not found.");
+    req.flash("error", "We couldn't find that stay.");
     return res.redirect("/listings");
   }
   // Delete image from Cloudinary if it exists and is not a default placeholder
@@ -172,7 +181,7 @@ module.exports.deleteListing = async (req, res) => {
 
   await Listing.findByIdAndDelete(id);
   //automatically all reviews are deleted from this listing as post middleware is defines in /model/listing.js
-  req.flash("success", "Listing deleted successfully.");
+  req.flash("success", "The stay has been removed from WanderNest.");
   // Flash message
   res.redirect("/listings");
 };

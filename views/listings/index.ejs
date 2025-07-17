@@ -45,26 +45,29 @@
   <% } %>
 
   <div class="container-fluid px-3 px-md-5 my-5 text-center">
-  <% if (typeof search !== "undefined" && search.trim() !== "") { %>
+    <% if (typeof search !== "undefined" && search.trim() !== "") { %>
     <h2 class="fw-semibold text-start">Search results for “<%= search %>”</h2>
     <p class="text-muted mb-0 text-start">
-      We found <strong><%= alllistings.length %></strong> matching properties.
+      Found <strong><%= alllistings.length %></strong> unique properties
+      matching your search.
     </p>
-  <% } else { %>
-    <h1 class="display-5 fw-bold">Discover Your Next Get‑away</h1>
+    <% } else { %>
+    <h1 class="display-5 fw-bold">
+      Discover handpicked stays across popular destinations
+    </h1>
     <p class="lead text-muted mb-0">
       Browse unique homes & experiences around the world.
     </p>
-  <% } %>
-</div>
+    <% } %>
+  </div>
 
-  
   <% if (alllistings.length === 0) { %>
   <div class="container my-5">
     <div class="alert alert-warning text-center">
-      <% if (search && search.trim() !== "") { %> No listings found for “<strong
+      <% if (search && search.trim() !== "") { %> No properties matched “<strong
         ><%= search %></strong
-      >”. <% } else { %> No listings available at the moment. <% } %>
+      >”. Please try another search. <% } else { %> No Stays Match Your Search.
+      <% } %>
     </div>
   </div>
   <% } %>

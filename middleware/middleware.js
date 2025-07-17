@@ -5,7 +5,7 @@ const Review = require("../models/review");
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.returnTo = req.originalUrl; //original path from where user was redirected
-    req.flash("error", "You must be logged in.");
+    req.flash("error", "You must be logged in to access this page.");
     return res.redirect("/login");
   }
   next();
@@ -20,17 +20,26 @@ module.exports.storeReturnTo = (req, res, next) => {
 };
 
 module.exports.isListingOwnerOrAdmin = async (req, res, next) => {
-  const { id } = req.params;
-  const listing = await Listing.findById(id);
-  if (!listing) {
-    req.flash("error", "Listing not found");
-    return res.redirect("/listings");
-  }
-  if (listing.owner.equals(req.user._id) || req.user.isAdmin) {
-    return next();
-  }
-  req.flash("error", "You do not have permission");
-  return res.redirect(`/listings/${id}`);
+    try {
+      const { id } = req.params;
+      const listing = await Listing.findById(id);
+      if (!listing) {
+        req.flash(
+          "error",
+          "The listing you are trying to access does not exist."
+        );
+        return res.redirect("/listings");
+      }
+      if (listing.owner.equals(req.user._id) || req.user.isAdmin) {
+        return next();
+      }
+      req.flash("error", "You do not have permission to modify this listing");
+      return res.redirect(`/listings/${id}`);
+    } catch (err) {
+      console.error(err);
+      req.flash("error", "Something went wrong. Please try again.");
+      res.redirect("/listings");
+    }
 };
 
 module.exports.isReviewAuthorOrAdmin = async (req, res, next) => {

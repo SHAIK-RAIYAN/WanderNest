@@ -21,7 +21,10 @@
 
         <!-- Card-like Form Box -->
         <div class="border border-secondary-subtle rounded p-4">
-          <h1 class="mb-4">Create a New Listing</h1>
+          <h1 class="mb-4">Host Your Stay</h1>
+          <p class="text-muted">
+            Share your unique stay with travelers across the globe.
+          </p>
           <form
             action="/listings"
             method="POST"
@@ -30,39 +33,47 @@
             novalidate>
             <!-- Title -->
             <div class="mb-3">
-              <label for="title" class="form-label">Title:</label>
+              <label for="title" class="form-label">Property Name:</label>
               <input
                 type="text"
                 id="title"
                 name="listing[title]"
                 class="form-control"
                 required />
-              <div class="invalid-feedback">Please enter a Title.</div>
+              <div class="invalid-feedback">
+                Please provide your property's name.
+              </div>
             </div>
 
             <!-- Description -->
             <div class="mb-3">
-              <label for="description" class="form-label">Description:</label>
+              <label for="description" class="form-label"
+                >Property Description:</label
+              >
               <textarea
                 id="description"
                 name="listing[description]"
                 rows="4"
                 class="form-control"
                 required></textarea>
-              <div class="invalid-feedback">Please enter a Description.</div>
+              <div class="invalid-feedback">Please describe your stay.</div>
             </div>
 
             <!-- Price + Country -->
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label for="price" class="form-label">Price (₹):</label>
+                <label for="price" class="form-label"
+                  >Price per Night (₹):</label
+                >
                 <input
                   type="number"
                   id="price"
                   name="listing[price]"
                   class="form-control"
                   required />
-                <div class="invalid-feedback">Please enter a valid Price.</div>
+                <div class="invalid-feedback">
+                  Please enter a valid nightly rate.
+                </div>
               </div>
               <div class="mb-3">
                 <label for="country" class="form-label">Country:</label>
@@ -79,7 +90,7 @@
 
             <!-- Image file upload -->
             <div class="mb-3">
-              <label for="image" class="form-label">Upload Image:</label>
+              <label for="image" class="form-label">Upload Cover Image:</label>
 
               <input
                 type="file"
@@ -88,24 +99,29 @@
                 class="form-control"
                 accept="image/*"
                 required />
-              <div class="invalid-feedback">Please provide an Image.</div>
+              <div class="invalid-feedback">
+                Please provide an Image.An image helps guests see your space
+              </div>
             </div>
 
             <!-- Location -->
             <div class="mb-3">
-              <label for="location" class="form-label">Location:</label>
+              <label for="location" class="form-label"
+                >Property Location :
+                <p class="text-muted">(City or Address)</p></label
+              >
               <input
                 type="text"
                 id="location"
                 name="listing[location]"
                 class="form-control"
                 required />
-              <div class="invalid-feedback">Please enter a Location.</div>
+              <div class="invalid-feedback">Please provide clear location.</div>
             </div>
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-dark fw-bold">
-              Create Listing
+              Publish Stay
             </button>
           </form>
         </div>
