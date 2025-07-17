@@ -4,7 +4,10 @@ const passport = require("passport");
 const wrapAsync = require("../utils/wrapAsync");
 const middleware = require("../middleware/middleware");
 const userController = require("../controllers/authUser");
-
+const { isLoggedIn } = require("../middleware/middleware.js");
+const multer = require("multer");
+const { storage } = require("../cloudConfig/cloudinary");
+const upload = multer({ storage });
 //signup
 router
   .route("/signup")
@@ -59,5 +62,8 @@ router.get(
   }),
   userController.githubLoginSuccess
 );
+
+// Show and update profile page
+router.route("/profile").get(isLoggedIn, userController.renderProfile).post(isLoggedIn, upload.single("profileImage"), userController.updateProfile);
 
 module.exports = router;
