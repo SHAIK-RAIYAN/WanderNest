@@ -19,9 +19,23 @@ async function geocodeLocation(location) {
   return { type: "Point", coordinates: [parseFloat(lon), parseFloat(lat)] };
 }
 
+//escapeRegex helper
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+
 module.exports.index = async (req, res) => {
-  let alllistings = await Listing.find({});
-  res.render("listings/index.ejs", { alllistings });
+  //search functionality
+  const { search } = req.query;
+  let filter = {};
+  if (search && search.trim() !== "") {
+    const regex = new RegExp(escapeRegex(search), "i"); // case‑insensitive
+    filter = {
+      $or: [{ title: regex }, { location: regex }, { country: regex }],
+    };
+  }
+  const alllistings = await Listing.find(filter).lean();
+  res.render("listings/index.ejs", { alllistings, search });
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -51,13 +65,13 @@ module.exports.createListing = async (req, res) => {
 
   // geocode once
   const geo = await geocodeLocation(req.body.listing.location);
-   if (!geo) {
-     req.flash(
-       "error",
-       `"${req.body.listing.location}" could not be located. Please enter a valid address or city.`
-     );
-     return res.redirect("/listings/new");
-   }
+  if (!geo) {
+    req.flash(
+      "error",
+      `"${req.body.listing.location}" could not be located. Please enter a valid address or city.`
+    );
+    return res.redirect("/listings/new");
+  }
   newListing.geometry = geo;
 
   if (req.file) {
