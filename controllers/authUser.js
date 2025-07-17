@@ -39,7 +39,7 @@ module.exports.renderLoginForm = (req, res) => {
 module.exports.localLoginSuccess = (req, res) => {
   const redirectUrl = res.locals.returnTo || "/listings";
   delete req.session.returnTo; // if user log out and log in again then old returnto is used, so delete it
-  req.flash("success", "Welcome back, ${req.user.username}!");
+  req.flash("success", `Welcome back, "${req.user.username}"!`);
   res.redirect(redirectUrl);
 };
 
