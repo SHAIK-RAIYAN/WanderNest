@@ -15,6 +15,7 @@ const flash = require("connect-flash"); //to show a flash msg when work (like po
 const passport = require("passport"); // passport for user login
 const authUserRoutes = require("./routes/authUser.js");
 
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
@@ -71,9 +72,7 @@ app.listen(3000, () => {
 });
 // root page
 app.get("/", (req, res) => {
-  res.send("root page");
-  // res.redirect("/listings");
-  //   res.render("home");
+  res.redirect("/listings");
 });
 // listings route
 app.use("/listings", listingsRoutes);
