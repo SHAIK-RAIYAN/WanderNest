@@ -168,6 +168,50 @@ a:hover {
   }
 }
 
+/* ─── Search Capsule ───────────────────────────────────────── */
+.search-capsule {
+  border-radius: 50px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border: 1px solid #dee2e6;
+  overflow: visible;
+  outline: none;
+}
+
+.search-capsule .form-control {
+  background-color: #fff;
+  color: #6c757d;
+  padding: 0.75rem 1.25rem;
+  border-radius: 50px 0 0 50px;
+  box-shadow: none !important;
+}
+
+.search-capsule .form-control::placeholder {
+  color: #adb5bd;
+}
+
+.search-capsule .search-btn {
+  background-color: #000;
+  border: none;
+  border-radius: 0 50px 50px 0;
+  margin: 0.3rem 0.3rem;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.search-btn:hover {
+  background-color: rgb(49, 49, 49) !important;
+  color: white !important;
+}
+
+/* ─── Responsive ───────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .search-capsule,
+  form.d-none.d-md-flex {
+    display: none !important;
+  }
+}
+
 /*footer */
 /* Social icons hover scale effect */
 .btn-floating i {

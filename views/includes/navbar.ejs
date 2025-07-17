@@ -3,127 +3,150 @@
   class="navbar navbar-expand-md fixed-top border-bottom border-body glass-effect navbar-transparent"
   data-bs-theme="light">
   <div
-    class="container-fluid d-flex align-items-center justify-content-between">
+    class="container-fluid d-flex align-items-center justify-content-between gap-3">
     <!-- Left: Brand -->
-    <a class="navbar-brand fw-bold fs-3 d-flex align-items-center" href="/">
-      <img
-        src="/images/logo.png"
-        alt="Logo"
-        width="40"
-        height="40"
-        class="me-2" />
-      WanderNest
-    </a>
+    <div class="d-flex align-items-center flex-shrink-0">
+      <a class="navbar-brand fw-bold fs-3 d-flex align-items-center" href="/">
+        <img
+          src="/images/logo.png"
+          alt="Logo"
+          width="40"
+          height="40"
+          class="me-2" />
+        WanderNest
+      </a>
+    </div>
 
-    <!-- Burger Toggle for Mobile -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarTogglerDemo02"
-      id="burgerToggle"
-      aria-controls="navbarTogglerDemo02"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <!-- Center: Search bar -->
+    <div class="d-none d-md-flex flex-grow-1 justify-content-center">
+      <form class="w-75" action="/listings" method="GET">
+        <div class="input-group search-capsule">
+          <input
+            type="search"
+            name="search"
+            class="form-control border-0"
+            placeholder="Search destinations" />
+          <button
+            class="btn search-btn d-flex align-items-center justify-content-center rounded-circle"
+            type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
 
-    <!-- Right: Nav Links -->
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-      <ul
-        class="navbar-nav ms-auto mb-2 mb-md-0 d-flex align-items-center gap-3 flex-nowrap">
-        <li class="nav-item text-nowrap">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item text-nowrap">
-          <a class="nav-link" href="/listings">Listings</a>
-        </li>
-        <li class="nav-item text-nowrap">
-          <a class="nav-link" href="/listings/new">Add Listing</a>
-        </li>
+    <!-- Right: Toggler and nav links -->
+    <div class="d-flex align-items-center flex-shrink-0">
+      <!-- Burger Toggle -->
+      <button
+        class="navbar-toggler me-2"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarTogglerDemo02"
+        id="burgerToggle"
+        aria-controls="navbarTogglerDemo02"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <% if (!currentUser) { %>
-        <li class="nav-item w-100 w-md-auto text-nowrap">
-          <a
-            href="/login"
-            class="btn btn-light text-dark px-3 py-1 w-100 w-md-auto">
-            Login
-          </a>
-        </li>
-        <li class="nav-item w-100 w-md-auto text-nowrap">
-          <a
-            href="/signup"
-            class="btn btn-dark text-white px-3 py-1 w-100 w-md-auto">
-            Sign Up
-          </a>
-        </li>
-        <% } else { %>
-        <!-- Profile Dropdown -->
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link d-flex align-items-center justify-content-center"
-            href="#"
-            id="profileDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style="padding: 0.3rem; border-radius: 50%">
-            <% if (currentUser?.profileImage) { %>
-            <img
-              src="<%= currentUser.profileImage %>"
-              alt="User"
-              class="rounded-circle"
-              style="width: 36px; height: 36px; object-fit: cover"
-              referrerpolicy="no-referrer" />
-            <% } else { %>
-            <i
-              class="fas fa-user-circle user-icon"
-              style="font-size: 1.9rem"></i>
-            <% } %>
-          </a>
-          <ul
-            class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0 text-center"
-            style="min-width: 240px; border-radius: 12px"
-            aria-labelledby="profileDropdown">
-            <!-- Profile Image -->
-            <li class="mb-2">
+      <!-- Right: Nav Links -->
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul
+          class="navbar-nav ms-auto mb-2 mb-md-0 d-flex align-items-center gap-3 flex-nowrap">
+          <li class="nav-item text-nowrap">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item text-nowrap">
+            <a class="nav-link" href="/listings">Listings</a>
+          </li>
+          <li class="nav-item text-nowrap">
+            <a class="nav-link" href="/listings/new">Add Listing</a>
+          </li>
+
+          <% if (!currentUser) { %>
+          <li class="nav-item w-100 w-md-auto text-nowrap">
+            <a
+              href="/login"
+              class="btn btn-light text-dark px-3 py-1 w-100 w-md-auto">
+              Login
+            </a>
+          </li>
+          <li class="nav-item w-100 w-md-auto text-nowrap">
+            <a
+              href="/signup"
+              class="btn btn-dark text-white px-3 py-1 w-100 w-md-auto">
+              Sign Up
+            </a>
+          </li>
+          <% } else { %>
+          <!-- Profile Dropdown -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link d-flex align-items-center justify-content-center"
+              href="#"
+              id="profileDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style="padding: 0.3rem; border-radius: 50%">
+              <% if (currentUser?.profileImage) { %>
               <img
-                src="<%= currentUser.profileImage || '/images/default-profile.jpg' %>"
-                alt="Profile Picture"
-                class="rounded-circle shadow-sm"
-                style="width: 60px; height: 60px; object-fit: cover"
+                src="<%= currentUser.profileImage %>"
+                alt="User"
+                class="rounded-circle"
+                style="width: 36px; height: 36px; object-fit: cover"
                 referrerpolicy="no-referrer" />
-            </li>
-            <!-- Username -->
-            <li>
-              <h6 class="mb-0"><%= currentUser.username %></h6>
-              <small class="text-muted">WanderNest User</small>
-            </li>
-            <li><hr class="dropdown-divider my-3" /></li>
-            <!-- My Profile -->
-            <li>
-              <a
-                class="dropdown-item d-flex align-items-center justify-content-center gap-2 py-2"
-                href="/profile">
-                <i class="fas fa-id-badge text-dark"></i>
-                My Profile
-              </a>
-            </li>
-            <!-- Logout -->
-            <li>
-              <form action="/logout" method="GET" class="m-0">
-                <button
-                  type="submit"
-                  class="dropdown-item d-flex align-items-center justify-content-center gap-2 py-2">
-                  <i class="fas fa-sign-out-alt text-danger"></i>
-                  Logout
-                </button>
-              </form>
-            </li>
-          </ul>
-        </li>
-        <% } %>
-      </ul>
+              <% } else { %>
+              <i
+                class="fas fa-user-circle user-icon"
+                style="font-size: 1.9rem"></i>
+              <% } %>
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0 text-center"
+              style="min-width: 240px; border-radius: 12px"
+              aria-labelledby="profileDropdown">
+              <!-- Profile Image -->
+              <li class="mb-2">
+                <img
+                  src="<%= currentUser.profileImage || '/images/default-profile.jpg' %>"
+                  alt="Profile Picture"
+                  class="rounded-circle shadow-sm"
+                  style="width: 60px; height: 60px; object-fit: cover"
+                  referrerpolicy="no-referrer" />
+              </li>
+              <!-- Username -->
+              <li>
+                <h6 class="mb-0"><%= currentUser.username %></h6>
+                <small class="text-muted">WanderNest User</small>
+              </li>
+              <li><hr class="dropdown-divider my-3" /></li>
+              <!-- My Profile -->
+              <li>
+                <a
+                  class="dropdown-item d-flex align-items-center justify-content-center gap-2 py-2"
+                  href="/profile">
+                  <i class="fas fa-id-badge text-dark"></i>
+                  My Profile
+                </a>
+              </li>
+              <!-- Logout -->
+              <li>
+                <form action="/logout" method="GET" class="m-0">
+                  <button
+                    type="submit"
+                    class="dropdown-item d-flex align-items-center justify-content-center gap-2 py-2">
+                    <i class="fas fa-sign-out-alt text-danger"></i>
+                    Logout
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </li>
+          <% } %>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>
