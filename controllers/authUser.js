@@ -53,3 +53,36 @@ module.exports.githubLoginSuccess = (req, res) => {
   req.flash("success", `Welcome back, ${req.user.username}!`);
   res.redirect("/listings");
 };
+
+// Render profile page
+module.exports.renderProfile = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  res.render("users/profile", { user });
+};
+
+// Handle profile update
+module.exports.updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (req.body.username) {
+      user.username = req.body.username;
+    }
+
+    if (req.file) {
+      user.profileImage = req.file.path;
+    }
+
+    await user.save();
+
+    // Re-login the user to update session
+    req.login(user, function (err) {
+      //Passport’s way of re-establishing a valid session after user data changes
+      if (err) return next(err);
+      req.flash("success", "Profile updated.");
+      return res.redirect("/profile");
+    });
+  } catch (err) {
+    next(err);
+  }
+};
