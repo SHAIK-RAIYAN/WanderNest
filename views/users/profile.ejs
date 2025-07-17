@@ -1,0 +1,65 @@
+<% layout('layouts/boilerplate') %>
+<div class="container py-5">
+   <% if (success && success.length > 0) { %>
+  <div class="alert-wrapper container mt-4">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= success[0] %>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+        onclick="this.closest('.alert-wrapper').remove()"></button>
+    </div>
+  </div>
+  <% } %>
+  <h2 class="mb-4">Your Profile</h2>
+
+  <form action="/profile" method="POST" enctype="multipart/form-data" class="row g-4">
+    <!-- Profile Image -->
+    <div class="col-12 text-center">
+      <img
+        src="<%= user.profileImage %>"
+        alt="Profile Picture"
+        class="rounded-circle shadow"
+        style="width: 150px; height: 150px; object-fit: cover" />
+      <div class="mt-2">
+        <label class="form-label">Change Profile Image</label>
+        <input class="form-control" type="file" name="profileImage" accept="image/*" />
+      </div>
+    </div>
+
+    <!-- Username -->
+    <div class="col-md-6">
+      <label for="username" class="form-label">Username</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        name="username"
+        value="<%= user.username %>"
+        required />
+    </div>
+
+    <!-- Email (read-only) -->
+    <div class="col-md-6">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" value="<%= user.email %>" readonly />
+    </div>
+
+    <!-- Created At -->
+    <div class="col-md-6">
+      <label class="form-label">User Since</label>
+      <input
+        type="text"
+        class="form-control"
+        value="<%= user.createdAt.toDateString() %>"
+        readonly />
+    </div>
+
+    <!-- Submit -->
+    <div class="col-12">
+      <button type="submit" class="btn btn-dark px-4">Update Profile</button>
+    </div>
+  </form>
+</div>
