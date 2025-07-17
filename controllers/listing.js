@@ -1,5 +1,6 @@
 const Listing = require("../models/listing.js");
 const ExpressError = require("../utils/ExpressError");
+const { cloudinary } = require("../cloudConfig/cloudinary");
 
 // function to geocode via Nominatim
 async function geocodeLocation(location) {
