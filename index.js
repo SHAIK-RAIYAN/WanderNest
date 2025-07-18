@@ -11,6 +11,7 @@ const ExpressError = require("./utils/ExpressError"); // error handling
 const listingsRoutes = require("./routes/listing.js"); //listing route
 const reviewRoutes = require("./routes/review.js"); //review route
 const session = require("express-session"); //for establishing a session
+const MongoStore = require("connect-mongo"); // for production //MongoDB session store for Connect and Express
 const flash = require("connect-flash"); //to show a flash msg when work (like post) is done
 const passport = require("passport"); // passport for user login
 const authUserRoutes = require("./routes/authUser.js");
@@ -29,8 +30,24 @@ app.use(methodOverride("_method"));
 
 app.engine("ejs", ejsMate);
 
+//connect-mongo session
+//therefore the session related info is also stored in Mongo atlas instead of local sys
+const store = MongoStore.create({
+  mongoUrl: DATABASE_URL,
+  crypto: {
+    secret: "wanderNestSecretCode",
+  },
+  touchAfter: 24 * 3600, // Interval(seconds) between session updates.
+});
+
+store.on("error", () => {
+  console.log("Error in MONGO SESSION store", err);
+});
+
 //express session
 const sessionOptions = {
+  store, //passing connect-mongo session
+  name: "WanderNest_session",
   secret: "wanderNestSecretCode",
   resave: false,
   saveUninitialized: false,
