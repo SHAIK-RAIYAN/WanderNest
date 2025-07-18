@@ -63,7 +63,7 @@ module.exports.showListing = async (req, res) => {
 
 module.exports.createListing = async (req, res) => {
   if (!req.body.listing) {
-    next(new ExpressError(400, "send Valid Data"));
+    return next(new ExpressError(400, "Invalid listing data provided."));
   }
   const newListing = new Listing(req.body.listing);
 
