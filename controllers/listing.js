@@ -61,7 +61,7 @@ module.exports.showListing = async (req, res) => {
   res.render("listings/show.ejs", { hotel });
 };
 
-module.exports.createListing = async (req, res) => {
+module.exports.createListing = async (req, res,next) => {
   if (!req.body.listing) {
     return next(new ExpressError(400, "Invalid listing data provided."));
   }

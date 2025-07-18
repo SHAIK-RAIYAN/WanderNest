@@ -4,7 +4,7 @@ module.exports.renderSignupForm = (req, res) => {
   res.render("users/signup");
 };
 
-module.exports.signup = async (req, res) => {
+module.exports.signup = async (req, res, next) => {
   try {
     let { username, email, password } = req.body;
     const newuser = new User({ email, username });
@@ -68,7 +68,7 @@ module.exports.renderProfile = async (req, res) => {
 };
 
 // Handle profile update
-module.exports.updateProfile = async (req, res) => {
+module.exports.updateProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
 
