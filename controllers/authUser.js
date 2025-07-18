@@ -10,7 +10,7 @@ module.exports.signup = async (req, res) => {
     const newuser = new User({ email, username });
     const registeredUser = await User.register(newuser, password);
     //checking Admin
-    if (registeredUser.email === "shaikraiyan2005@gmail.com") {
+    if (registeredUser.email === process.env.ADMIN_EMAIL) {
       registeredUser.isAdmin = true;
       await registeredUser.save();
     }

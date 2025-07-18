@@ -28,8 +28,7 @@ function configurePassport() {
               googleId: profile.id,
               email: profile.emails?.[0]?.value,
               profileImage: profile.photos?.[0]?.value,
-              isAdmin:
-                profile.emails?.[0]?.value === "shaikraiyan2005@gmail.com", //check admin 
+              isAdmin: profile.emails?.[0]?.value === process.env.ADMIN_EMAIL, //check admin
             });
           }
           return done(null, user);
@@ -57,8 +56,7 @@ function configurePassport() {
               githubId: profile.id,
               email: profile.emails?.[0]?.value,
               profileImage: profile.photos?.[0]?.value,
-              isAdmin:
-                profile.emails?.[0]?.value === "shaikraiyan2005@gmail.com", //check admin
+              isAdmin: profile.emails?.[0]?.value === process.env.ADMIN_EMAIL, //check admin
             });
           }
           return done(null, user);
