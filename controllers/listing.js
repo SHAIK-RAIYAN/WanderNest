@@ -4,11 +4,22 @@ const { cloudinary } = require("../cloudConfig/cloudinary");
 
 // function to geocode via Nominatim
 async function geocodeLocation(location) {
-  const res = await fetch(
-    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-      location
-    )}`
-  );
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+    location
+  )}`;
+
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent": "WanderNest/1.0 (your-email@example.com)",
+      "Accept-Language": "en",
+    },
+  });
+
+  if (!res.ok) {
+    console.error(`Geocoding failed (${res.status}): ${await res.text()}`);
+    return null;
+  }
+
   const data = await res.json();
 
   if (!data || data.length === 0) {
@@ -61,7 +72,7 @@ module.exports.showListing = async (req, res) => {
   res.render("listings/show.ejs", { hotel });
 };
 
-module.exports.createListing = async (req, res,next) => {
+module.exports.createListing = async (req, res, next) => {
   if (!req.body.listing) {
     return next(new ExpressError(400, "Invalid listing data provided."));
   }
