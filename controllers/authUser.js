@@ -18,7 +18,7 @@ module.exports.signup = async (req, res) => {
       if (err) return next(err);
       req.flash(
         "success",
-        "Welcome to WanderNest, ${registeredUser.username}!"
+        `Welcome to WanderNest, " ${registeredUser.username} "!`
       );
       res.redirect("/listings");
     });

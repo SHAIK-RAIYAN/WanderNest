@@ -15,6 +15,9 @@ const flash = require("connect-flash"); //to show a flash msg when work (like po
 const passport = require("passport"); // passport for user login
 const authUserRoutes = require("./routes/authUser.js");
 
+const mongoose = require("mongoose");
+// const MONGO_URL = "mongodb://127.0.0.1:27017/WanderNest";
+const DATABASE_URL = process.env.ATLAS_DB_URL; //mongo atlas DB url
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -54,9 +57,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// mongoose connectioon
-const mongoose = require("mongoose");
-const MONGO_URL = "mongodb://127.0.0.1:27017/WanderNest";
+// mongoose connection
 main()
   .then((res) => {
     console.log("Connection succcessful");
@@ -64,7 +65,7 @@ main()
   .catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect(MONGO_URL);
+  await mongoose.connect(DATABASE_URL);
 }
 
 app.listen(3000, () => {
