@@ -18,6 +18,25 @@
     </div>
   </div>
 
+  <!-- Mobile Only Search Capsule (Visible Only on Home Page and Small Devices) -->
+  <div class="container-fluid d-md-none mt-4 px-4 d-flex justify-content-center">
+    <form class="w-100" action="/listings" method="GET">
+      <div class="input-group search-capsule">
+        <input
+          type="search"
+          name="search"
+          class="form-control border-0"
+          placeholder="Search destinations"
+          value="<%= typeof search !== 'undefined' ? search : '' %>" />
+        <button
+          class="btn search-btn d-flex align-items-center justify-content-center rounded-circle"
+          type="submit">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+
   <% if (success && success.length > 0) { %>
   <div class="alert-wrapper container mt-4">
     <div class="alert alert-success alert-dismissible fade show" role="alert">

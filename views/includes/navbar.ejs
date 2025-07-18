@@ -36,11 +36,69 @@
       </form>
     </div>
 
-    <!-- Right: Toggler and nav links -->
-    <div class="d-flex align-items-center flex-shrink-0">
-      <!-- Burger Toggle -->
+    <!-- Mobile only: profile dropdown trigger -->
+    <div class="d-flex d-md-none align-items-center ms-auto">
+      <!-- profile trigger -->
+      <% if (currentUser) { %>
+      <div class="dropdown">
+        <a
+          href="#"
+          id="mobileProfileDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          class="d-flex align-items-center"
+          style="padding: 0.2rem; border-radius: 50%">
+          <% if (currentUser.profileImage) { %>
+          <img
+            src="<%= currentUser.profileImage %>"
+            alt="Profile"
+            class="rounded-circle"
+            style="width: 32px; height: 32px; object-fit: cover" />
+          <% } else { %>
+          <i class="fas fa-user-circle user-icon" style="font-size: 1.8rem"></i>
+          <% } %>
+        </a>
+        <ul
+          class="dropdown-menu dropdown-menu-end shadow-lg"
+          aria-labelledby="mobileProfileDropdown"
+          style="min-width: 200px; border-radius: 0.5rem">
+          <li class="px-3 py-2 text-center">
+            <img
+              src="<%= currentUser.profileImage || '/images/default-profile.jpg' %>"
+              alt="Profile Picture"
+              class="rounded-circle mb-2 shadow-sm"
+              style="width: 48px; height: 48px; object-fit: cover" />
+            <h6 class="mb-0"><%= currentUser.username %></h6>
+            <small class="text-muted">
+              Member since <%= new
+              Date(currentUser.createdAt).toLocaleDateString("en-IN", { month:
+              "short", year: "numeric", }) %>
+            </small>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a
+              class="dropdown-item d-flex align-items-center gap-2"
+              href="/profile">
+              <i class="fas fa-id-badge"></i> My Profile
+            </a>
+          </li>
+          <li>
+            <form action="/logout" method="GET" class="m-0">
+              <button
+                class="dropdown-item d-flex align-items-center gap-2"
+                type="submit">
+                <i class="fas fa-sign-out-alt text-danger"></i> Logout
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+      <% } %>
+
+      <!-- Right: Toggler and nav links -->
       <button
-        class="navbar-toggler me-2"
+        class="navbar-toggler"
         type="button"
         data-bs-toggle="collapse"
         data-bs-target="#navbarTogglerDemo02"
@@ -50,6 +108,9 @@
         aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+    </div>
+    <div class="d-flex align-items-center flex-shrink-0">
+      <!-- Burger Toggle -->
 
       <!-- Right: Nav Links -->
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
@@ -79,69 +140,71 @@
           </li>
           <% } else { %>
           <!-- Profile Dropdown -->
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link d-flex align-items-center justify-content-center"
-              href="#"
-              id="profileDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              style="padding: 0.3rem; border-radius: 50%">
-              <% if (currentUser?.profileImage) { %>
-              <img
-                src="<%= currentUser.profileImage %>"
-                alt="User"
-                class="rounded-circle"
-                style="width: 36px; height: 36px; object-fit: cover"
-                referrerpolicy="no-referrer" />
-              <% } else { %>
-              <i
-                class="fas fa-user-circle user-icon"
-                style="font-size: 1.9rem"></i>
-              <% } %>
-            </a>
-            <ul
-              class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0 text-center"
-              style="min-width: 240px; border-radius: 12px"
-              aria-labelledby="profileDropdown">
-              <!-- Profile Image -->
-              <li class="mb-2">
+          <div class="d-none d-md-block">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link d-flex align-items-center justify-content-center"
+                href="#"
+                id="profileDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style="padding: 0.3rem; border-radius: 50%">
+                <% if (currentUser?.profileImage) { %>
                 <img
-                  src="<%= currentUser.profileImage || '/images/default-profile.jpg' %>"
-                  alt="Profile Picture"
-                  class="rounded-circle shadow-sm"
-                  style="width: 60px; height: 60px; object-fit: cover"
+                  src="<%= currentUser.profileImage %>"
+                  alt="User"
+                  class="rounded-circle"
+                  style="width: 36px; height: 36px; object-fit: cover"
                   referrerpolicy="no-referrer" />
-              </li>
-              <!-- Username -->
-              <li>
-                <h6 class="mb-0"><%= currentUser.username %></h6>
-                <small class="text-muted">WanderNest User</small>
-              </li>
-              <li><hr class="dropdown-divider my-3" /></li>
-              <!-- My Profile -->
-              <li>
-                <a
-                  class="dropdown-item d-flex align-items-center justify-content-center gap-2 py-2"
-                  href="/profile">
-                  <i class="fas fa-id-badge text-dark"></i>
-                  My Profile
-                </a>
-              </li>
-              <!-- Logout -->
-              <li>
-                <form action="/logout" method="GET" class="m-0">
-                  <button
-                    type="submit"
-                    class="dropdown-item d-flex align-items-center justify-content-center gap-2 py-2">
-                    <i class="fas fa-sign-out-alt text-danger"></i>
-                    Logout
-                  </button>
-                </form>
-              </li>
-            </ul>
-          </li>
+                <% } else { %>
+                <i
+                  class="fas fa-user-circle user-icon"
+                  style="font-size: 1.9rem"></i>
+                <% } %>
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0 text-center"
+                style="min-width: 240px; border-radius: 12px"
+                aria-labelledby="profileDropdown">
+                <!-- Profile Image -->
+                <li class="mb-2">
+                  <img
+                    src="<%= currentUser.profileImage || '/images/default-profile.jpg' %>"
+                    alt="Profile Picture"
+                    class="rounded-circle shadow-sm"
+                    style="width: 60px; height: 60px; object-fit: cover"
+                    referrerpolicy="no-referrer" />
+                </li>
+                <!-- Username -->
+                <li>
+                  <h6 class="mb-0"><%= currentUser.username %></h6>
+                  <small class="text-muted">WanderNest User</small>
+                </li>
+                <li><hr class="dropdown-divider my-3" /></li>
+                <!-- My Profile -->
+                <li>
+                  <a
+                    class="dropdown-item d-flex align-items-center justify-content-center gap-2 py-2"
+                    href="/profile">
+                    <i class="fas fa-id-badge text-dark"></i>
+                    My Profile
+                  </a>
+                </li>
+                <!-- Logout -->
+                <li>
+                  <form action="/logout" method="GET" class="m-0">
+                    <button
+                      type="submit"
+                      class="dropdown-item d-flex align-items-center justify-content-center gap-2 py-2">
+                      <i class="fas fa-sign-out-alt text-danger"></i>
+                      Logout
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+          </div>
           <% } %>
         </ul>
       </div>

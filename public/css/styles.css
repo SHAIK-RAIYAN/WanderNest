@@ -204,13 +204,6 @@ a:hover {
   color: white !important;
 }
 
-@media (max-width: 767.98px) {
-  .search-capsule,
-  form.d-none.d-md-flex {
-    display: none !important;
-  }
-}
-
 body#homePage .search-capsule {
   display: flex;
 }
@@ -222,11 +215,15 @@ body:not(#homePage) form.d-none.d-md-flex {
 
 
 @media (max-width: 767.98px) {
-  body#homePage .search-capsule,
   body#homePage form.d-none.d-md-flex {
-    display: none !important; /* still hide on small devices */
+    display: none !important;
+  }
+
+  body#homePage .d-md-none .search-capsule {
+    display: flex !important;
   }
 }
+
 
 /*footer */
 /* Social icons hover scale effect */
