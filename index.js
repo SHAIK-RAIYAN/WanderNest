@@ -1,105 +1,100 @@
-// Loading env variables
+// index.js
 require("dotenv").config();
-require("./config/passport.js"); // register all passport strategies
+require("./config/passport"); // your passport strategies
 
-const mongoose = require("mongoose");
 const express = require("express");
-const app = express();
+const mongoose = require("mongoose");
 const path = require("path");
-const methodOverride = require("method-override"); //for patch and delete req
-const ejsMate = require("ejs-mate"); //to include other ejs files in a ejs file
-const ExpressError = require("./utils/ExpressError"); // error handling
-const session = require("express-session"); //for establishing a session
-const MongoStore = require("connect-mongo"); // for production //MongoDB session store for Connect and Express
-const flash = require("connect-flash"); //to show a flash msg when work (like post) is done
-const passport = require("passport"); // passport for user login
-const listingsRoutes = require("./routes/listing.js"); //listing route
-const reviewRoutes = require("./routes/review.js"); //review route
-const authUserRoutes = require("./routes/authUser.js");
+const methodOverride = require("method-override");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const flash = require("connect-flash");
+const passport = require("passport");
+const ejsMate = require("ejs-mate");
+const ExpressError = require("./utils/ExpressError");
 
-// const MONGO_URL = "mongodb://127.0.0.1:27017/WanderNest";
-const DATABASE_URL = process.env.ATLAS_DB_URL; //mongo atlas DB url
+const listingsRoutes = require("./routes/listing");
+const reviewRoutes = require("./routes/review");
+const authUserRoutes = require("./routes/authUser");
 
-app.set("views", path.join(__dirname, "views"));
+const app = express();
+
+// --- App & View Engine Setup ----------------
+app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
-
 app.use(methodOverride("_method"));
 
-app.engine("ejs", ejsMate);
+// --- Database Connection --------------------
+const DATABASE_URL = process.env.ATLAS_DB_URL;
+async function connectDB() {
+  try {
+    await mongoose.connect(DATABASE_URL);
+    console.log("✅ MongoDB connected");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err);
+    process.exit(1);
+  }
+}
+connectDB();
 
-//connect-mongo session
-//therefore the session related info is also stored in Mongo atlas instead of local sys
+// --- Session & Flash ------------------------
 const store = MongoStore.create({
   mongoUrl: DATABASE_URL,
-  crypto: {
+  crypto: { secret: process.env.SESSION_SECRET },
+  touchAfter: 24 * 3600,
+});
+store.on("error", (err) => console.error("Session store error:", err));
+
+app.use(
+  session({
+    store,
+    name: "WanderNest_session",
     secret: process.env.SESSION_SECRET,
-  },
-  touchAfter: 24 * 3600, // Interval(seconds) between session updates.
-});
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    },
+  })
+);
 
-store.on("error", (err) => {
-  console.log("Error in MONGO SESSION store", err);
-});
-
-//express session
-const sessionOptions = {
-  store, //passing connect-mongo session
-  name: "WanderNest_session",
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true, // Helps prevent cross-site scripting (XSS) attacks
-  },
-};
-app.use(session(sessionOptions));
 app.use(flash());
 
-app.use(passport.initialize()); //A middleware that initializes passport
-app.use(passport.session()); //the ability to identify its the same user as they browse from page to page in a single session.
+// --- Passport Initialization -----------------
+app.use(passport.initialize());
+app.use(passport.session());
 
+// --- Locals Middleware ----------------------
 app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  res.locals.currentUser = req.user;
   next();
 });
-//adding user details to locals so that it can be accessed anywhere in files
 
-// mongoose connection
-async function main() {
-  await mongoose.connect(DATABASE_URL);
-}
-const port = process.env.PORT || 3000;
-main()
-  .then(() => {
-    console.log("Connection succcessful");
-    app.listen(port, () => {
-      console.log(`WanderNest server running on http://localhost:${port}`);
-    });
-  })
-  .catch((err) => console.log(err));
-
-// root page
-app.get("/", (req, res) => {
-  res.redirect("/listings");
-});
-// listings route
+// --- Routes ----------------------------------
+app.get("/", (req, res) => res.redirect("/listings"));
 app.use("/listings", listingsRoutes);
-//reviews route
 app.use("/listings/:id/reviews", reviewRoutes);
-// authUser routes
 app.use("/", authUserRoutes);
 
-//errors Handling (at end)
-app.all("*", (req, res, next) => {
+// --- 404 & Error Handler --------------------
+app.all("/*splat", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
+
 app.use((err, req, res, next) => {
   const { status = 500, message = "Something went wrong" } = err;
-  res.status(status).render("listings/error.ejs", { status,message });
+  res.status(status).render("listings/error", { status, message });
+});
+
+// --- Server Startup -------------------------
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`🚀 Server running at http://localhost:${port}`);
 });
