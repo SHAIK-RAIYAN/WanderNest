@@ -1,127 +1,197 @@
-# WanderNest
+# 🌍 WanderNest
 
-**“Where Every Wander Finds a Nest”**
+![Node.js](https://img.shields.io/badge/Node.js-v18%2B-green)
+![Express](https://img.shields.io/badge/Express-5.x-lightgrey)
+![MongoDB](https://img.shields.io/badge/MongoDB-5.x-green)
+![EJS](https://img.shields.io/badge/EJS-templating-yellow)
+![Deployed on Render](https://img.shields.io/badge/Deploy%20Status-Active-blue)
+
+> **"Where Every Wander Finds a Nest"**
+
+---
+
+## 📖 Table of Contents
+
+1. [Project Overview](#project-overview)
+2. [Live Demo](#live-demo)
+3. [Key Features](#key-features)
+4. [Tech Stack](#tech-stack)
+5. [Installation & Setup](#installation--setup)
+6. [Environment Variables](#environment-variables)
+7. [Database Configuration](#database-configuration)
+8. [Running Locally](#running-locally)
+9. [Deployment](#deployment)
+10. [Project Structure](#project-structure)
+11. [Contributing](#contributing)
+12. [Contact](#contact)
 
 ---
 
 ## 🚀 Project Overview
 
-WanderNest is an end‑to‑end property listing platform, built to connect travelers with trusted hosts across India. Our goal is to streamline the discovery, booking, and management of unique stays—from beachfront cottages to urban lofts—through a robust, scalable web application.
+WanderNest is an innovative, full-stack property listing platform that bridges the gap between travelers and hosts across India. Designed to deliver a seamless experience, it empowers users to explore unique stays, manage property listings, and share authentic reviews. With a robust architecture and modern design, WanderNest combines functionality with elegance, making it the go-to solution for wanderers seeking their perfect nest.
+
+---
+
+## 🔗 Live Demo
+
+Discover WanderNest in action:
+
+👉 [https://wandernest-sffj.onrender.com](https://wandernest-sffj.onrender.com)
 
 ---
 
 ## 🎯 Key Features
 
-- **Dynamic Listings CRUD**
+- **Secure Authentication**: Effortless sign-in with local credentials, Google, or GitHub, powered by Passport.js.
+- **Role-Based Authorization**: Granular access control, enabling admins and property owners to oversee listings and reviews with precision.
+- **Property Listings**: Comprehensive CRUD operations for creating, viewing, updating, and deleting stays, enriched with detailed fields like title, price, and geolocation.
+- **Review System**: Authenticated users can submit, modify, or remove reviews, with smart cleanup tied to listing deletions.
+- **Image Management**: Seamless Cloudinary integration for uploading and managing property images, with fallback defaults for uninterrupted visuals.
+- **Geolocation Precision**: Pinpoint property locations using OpenStreetMap’s Nominatim API, enhancing discoverability for travelers.
+- **Elegant UI/UX**: A responsive, light-themed interface built with Bootstrap 5, featuring a glassmorphic navbar, a burger-to-X mobile toggle, and a captivating hero banner.
 
-  - Create, Read, Update, Delete operations for hotel properties
-  - Rich schema: title, description, image (with default & validation), price, location, country
+---
 
-- **Responsive, Dark‑Themed UI**
+## 🛠️ Tech Stack
 
-  - Mobile‑first design with Bootstrap 5
-  - Glass‑morphism navbar that transitions to solid on scroll
-  - Hero banner (desktop only) with overlay messaging
-  - Card‑based listing grid (1 on mobile, 4 on desktop)
-
-- **Templating & Routing**
-
-  - Express.js router architecture
-  - EJS templates with a shared layout and partials (navbar, footer)
-  - Client‑side JS for enhanced interactivity (dynamic country dropdown, burger‑to‑X toggle)
-
-- **Data Persistence**
-
-  - MongoDB via Mongoose ODM
-  - Environment‑agnostic connection string (local development)
-  - Default image handling and schema setters for data integrity
+| Layer            | Technology                                         |
+|------------------|----------------------------------------------------|
+| **Frontend**     | Bootstrap 5, HTML5, CSS3, EJS Templating           |
+| **Backend**      | Node.js, Express.js                                |
+| **Database**     | MongoDB Atlas, Mongoose ODM                        |
+| **Authentication**| Passport.js (Local, Google, GitHub)               |
+| **File Uploads** | Multer, Cloudinary                                 |
+| **Geocoding**    | OpenStreetMap Nominatim API                        |
+| **Hosting**      | Render.com                                         |
 
 ---
 
 ## ⚙️ Installation & Setup
 
-1. **Clone the repository**
-
+1. **Clone the Repository**:
    ```bash
    git clone https://github.com/SHAIK-RAIYAN/WanderNest.git
    cd WanderNest
    ```
 
-2. **Install dependencies**
-
+2. **Install Dependencies**:
    ```bash
    npm install
    ```
 
-3. **Configure your environment variables**
+---
 
-   Create a `.env` file in the root directory and define the following:
+## 🔑 Environment Variables
 
-   ```env
-   GOOGLE_CLIENT_ID=
-   GOOGLE_CLIENT_SECRET=
-   GOOGLE_CALLBACK_URL=http://localhost:3000/auth/google/callback
+Create a `.env` file in the root directory with the following configuration:
 
-   GITHUB_CLIENT_ID=
-   GITHUB_CLIENT_SECRET=
-   GITHUB_CALLBACK_URL=http://localhost:3000/auth/github/callback
-   ```
+```env
+# Application Secrets
+SESSION_SECRET=your-session-secret
+ADMIN_EMAIL=your-admin-email
 
-   > 💡 **OAuth Setup:**
-   >
-   > - Google: [https://console.cloud.google.com/apis/credentials](https://console.cloud.google.com/apis/credentials)
-   > - GitHub: [https://github.com/settings/developers](https://github.com/settings/developers)
-   >
-   > Go to these links and create the ID's and SECRET code.
+# MongoDB Configuration
+MONGO_URL=mongodb://127.0.0.1:27017/WanderNest
+# For Atlas, replace with:
+# MONGO_URL=your_mongodb_atlas_connection_string
 
-4. **Configure your database**
+# Google OAuth
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_CALLBACK_URL=http://localhost:3000/auth/google/callback
 
-   By default, the app connects to:
+# GitHub OAuth
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
+GITHUB_CALLBACK_URL=http://localhost:3000/auth/github/callback
 
-   ```
-   mongodb://127.0.0.1:27017/WanderNest
-   ```
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
+CLOUDINARY_API_KEY=your-cloudinary-api-key
+CLOUDINARY_API_SECRET=your-cloudinary-api-secret
+```
 
-   To use a remote MongoDB Atlas cluster, set the environment variable `MONGO_URL` before starting the app.
+> **Note**: Add `.env` to your `.gitignore` to keep sensitive data secure.
 
-5. **Run the app**
+---
 
-   ```bash
-   npm run dev
-   # or
-   node index.js
-   ```
+## 🗄️ Database Configuration
 
-6. **Browse the app**
+- **Local MongoDB**: Ensure MongoDB is running locally with `mongod`.
+- **MongoDB Atlas**:
+  - Set up a cluster at [MongoDB Atlas](https://cloud.mongodb.com).
+  - Whitelist your IP address.
+  - Update the `MONGO_URL` in your `.env` file with the Atlas connection string.
 
-   - Home / Listings: [http://localhost:3000/](http://localhost:3000/)
-   - Add Listing: [http://localhost:3000/listings/new](http://localhost:3000/listings/new)
-   - View Listing: [http://localhost:3000/listings/\:id](http://localhost:3000/listings/:id)
+---
+
+## 🏃 Running Locally
+
+Launch the application:
+
+```bash
+# Development mode with hot reload
+npm run dev
+
+# Production mode
+node index.js
+```
+
+Navigate to `http://localhost:3000` in your browser.
+
+---
+
+## ☁️ Deployment
+
+1. Push your code to GitHub.
+2. Create a **Web Service** on [Render.com](https://render.com):
+   - Link your GitHub repository.
+   - Configure build and start commands:
+     ```bash
+     Build: npm install
+     Start: node index.js
+     ```
+   - Input environment variables in the Render dashboard.
+3. Deploy and access your live platform.
+
+---
+
+## 📁 Project Structure
+
+```
+WanderNest/
+├── cloudConfig/        # Cloudinary configuration
+├── controllers/        # Route handling logic
+├── init/               # Initial setup and sample data
+├── middleware/         # Authentication and validation logic
+├── models/             # Mongoose schemas for data modeling
+├── routes/             # Express route definitions
+├── seedDB/             # Database seeding utilities
+├── utils/              # Helper functions and custom error handling
+├── views/              # EJS templates for dynamic rendering
+├── public/             # Static assets (CSS, JS, images)
+├── .env                # Environment variables (excluded from git)
+├── index.js            # Application entry point
+└── package.json        # Project dependencies and scripts
+```
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create your feature branch:
+We welcome contributions to enhance WanderNest! Follow these steps:
 
+1. **Fork** the repository.
+2. Create a **feature branch**:
    ```bash
-   git checkout -b feat/your-feature
+   git checkout -b feat/your-feature-name
    ```
-
 3. Commit your changes:
-
    ```bash
-   git commit -m "feat: add your feature"
+   git commit -m "feat: describe your enhancement"
    ```
-
-4. Push to GitHub:
-
-   ```bash
-   git push origin feat/your-feature
-   ```
-
-5. Open a pull request
+4. Push and submit a **Pull Request**.
 
 ---
 
@@ -129,4 +199,9 @@ WanderNest is an end‑to‑end property listing platform, built to connect trav
 
 **Shaik Raiyan**
 
-- 📧 [shaikraiyan2005@example.com](mailto:shaikraiyan2005@example.com)
+- GitHub: [@SHAIK-RAIYAN](https://github.com/SHAIK-RAIYAN)
+- Email: [shaikraiyan2005@example.com](mailto:shaikraiyan2005@example.com)
+
+---
+
+> *Crafted with passion using Node.js, Express, and MongoDB*
