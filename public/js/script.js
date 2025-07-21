@@ -162,3 +162,13 @@ document.addEventListener("DOMContentLoaded", () => {
     .bindPopup(`<strong>${title}</strong><br>${location}`)
     .openPopup();
 });
+
+// ────────────────────────────────────────────────────────────────────────────
+//loader
+const loaderContainer = document.querySelector(".loader-container");
+if (loaderContainer) {
+  // Use window.addEventListener('load', ...) to ensure all content (including images) is loaded
+  window.addEventListener("load", () => {
+    loaderContainer.classList.add("hidden");
+  });
+}

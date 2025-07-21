@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WanderNest</title>
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/loader.css" />
     <!-- bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
@@ -22,13 +23,17 @@
       href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Open+Sans:wght@300;400&display=swap"
       rel="stylesheet" />
 
-      <!-- leafletjs - for maps in show page-->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-     
+    <!-- leafletjs - for maps in show page-->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="" />
   </head>
   <body>
+    <div class="loader-container">
+      <div class="loader"></div>
+    </div>
     <%- include("../includes/navbar.ejs") %>
     <main class="container-fluid p-0"><%- body %></main>
 
@@ -38,14 +43,14 @@
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
       crossorigin="anonymous"></script>
-      <!-- including all country names for country drop down in new/edit.ejs -->
-      <script src="/js/countries.js"></script>
-      <!-- leafletjs -->
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-       crossorigin=""></script>
+    <!-- including all country names for country drop down in new/edit.ejs -->
+    <script src="/js/countries.js"></script>
+    <!-- leafletjs -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""></script>
     <!-- normal JS -->
     <script src="/js/script.js"></script>
-
   </body>
 </html>
