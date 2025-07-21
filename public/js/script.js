@@ -2,6 +2,16 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   ("use strict");
+  // ────────────────────────────────────────────────────────────────────────────
+  // Page pre-loader
+  const loaderContainer = document.querySelector(".loader-container");
+
+  // Hide loader once the page and all its content (images, etc.) are fully loaded.
+  if (loaderContainer) {
+    window.addEventListener("load", () => {
+      loaderContainer.classList.add("hidden");
+    });
+  }
 
   // ────────────────────────────────────────────────────────────────────────────
   // Navbar toggle icon animation
@@ -84,6 +94,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!form.checkValidity()) {
           e.preventDefault();
           e.stopPropagation();
+        } else {
+          // On valid submission, show the loader while the server processes the request.
+          if (loaderContainer) {
+            loaderContainer.classList.remove("hidden");
+          }
         }
         form.classList.add("was-validated");
       },
@@ -105,6 +120,11 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         e.stopPropagation();
         feedback.style.display = "block";
+      } else {
+        // Also show loader for review submission
+        if (loaderContainer) {
+          loaderContainer.classList.remove("hidden");
+        }
       }
       reviewForm.classList.add("was-validated");
     });
@@ -162,13 +182,3 @@ document.addEventListener("DOMContentLoaded", () => {
     .bindPopup(`<strong>${title}</strong><br>${location}`)
     .openPopup();
 });
-
-// ────────────────────────────────────────────────────────────────────────────
-//loader
-const loaderContainer = document.querySelector(".loader-container");
-if (loaderContainer) {
-  // Use window.addEventListener('load', ...) to ensure all content (including images) is loaded
-  window.addEventListener("load", () => {
-    loaderContainer.classList.add("hidden");
-  });
-}
