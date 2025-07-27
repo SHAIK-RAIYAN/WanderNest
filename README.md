@@ -203,5 +203,7 @@ We welcome contributions to enhance WanderNest! Follow these steps:
 - Email: [shaikraiyan2005@gmail.com](mailto:shaikraiyan2005@gmail.com)
 
 ---
+⭐ **Show Some Love**  
+If you enjoy this project, drop a star ⭐ on the repo and share your thoughts! 🚀
 
 > *Crafted with passion ⚡ by SHAIK RAIYAN*
