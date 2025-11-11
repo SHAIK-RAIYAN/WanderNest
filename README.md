@@ -200,8 +200,10 @@ We welcome contributions to enhance WanderNest! Follow these steps:
 **Shaik Raiyan**
 
 - GitHub: [@SHAIK-RAIYAN](https://github.com/SHAIK-RAIYAN)
-- Email: [shaikraiyan2005@example.com](mailto:shaikraiyan2005@example.com)
+- Email: [shaikraiyan2005@gmail.com](mailto:shaikraiyan2005@gmail.com)
 
 ---
+⭐ **Show Some Love**  
+If you enjoy this project, drop a star ⭐ on the repo and share your thoughts! 🚀
 
-> *Crafted with passion using Node.js, Express, and MongoDB*
+> *Crafted with passion ⚡ by SHAIK RAIYAN*
