@@ -37,6 +37,11 @@ function escapeRegex(text) {
 }
 
 module.exports.index = async (req, res) => {
+  //pagination setup
+  const page = parseInt(req.query.page) || 1;
+  const limit = 20;
+  const skip = (page - 1) * limit; //how many to skip in page
+
   //search functionality
   const { search } = req.query;
   let filter = {};
@@ -46,8 +51,18 @@ module.exports.index = async (req, res) => {
       $or: [{ title: regex }, { location: regex }, { country: regex }],
     };
   }
-  const alllistings = await Listing.find(filter).lean();
-  res.render("listings/index.ejs", { alllistings, search });
+
+  const alllistings = await Listing.find(filter).skip(skip).limit(limit).lean(); //lean() converts Mongoose docs to plain JS objects
+
+  const totalListings = await Listing.countDocuments(filter);
+  const totalPages = Math.ceil(totalListings / limit);
+
+  res.render("listings/index.ejs", {
+    alllistings,
+    search: search || "",
+    currentPage: page,
+    totalPages: totalPages,
+  });
 };
 
 module.exports.renderNewForm = (req, res) => {

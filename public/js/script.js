@@ -8,8 +8,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Hide loader once the page and all its content (images, etc.) are fully loaded.
   if (loaderContainer) {
-    window.addEventListener("load", () => {
+    loaderContainer.classList.add("hidden");
+
+    window.addEventListener("pageshow", () => {
       loaderContainer.classList.add("hidden");
+    });
+  }
+
+  // ────────────────────────────────────────────────────────────────────────────
+  // Navigation Link Loader (NEW CODE)
+  // Show loader on any link click that causes page navigation.
+  if (loaderContainer) {
+    // Select all links, but exclude those opening new tabs or hash-only links.
+    const navLinks = document.querySelectorAll(
+      'a:not([target="_blank"]):not([href^="#"])'
+    );
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        // Show the loader immediately on click
+        loaderContainer.classList.remove("hidden");
+      });
     });
   }
 
